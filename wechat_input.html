@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Angular JS Examples</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <style>
+        .text-warning{
+            color:red;
+        }
+    </style>
+    <script>
+        var angularModule=angular.module("MyApp",[]);
+        angularModule.controller("TextAreaWithLimitCtrl", function ($scope) {
+            var MAX_LEN=12;
+            $scope.message="";
+            $scope.remain= function () {
+
+                return ((MAX_LEN-$scope.message.length)>=0)?(MAX_LEN-$scope.message.length):0;
+
+            };
+
+            $scope.hasValidLength= function () {
+                return (MAX_LEN>=$scope.message.length)?true:false;
+            };
+            $scope.shouldWarn=function(){
+                return ($scope.message.length>=(MAX_LEN*0.8))?true:false;
+            };
+            $scope.clear= function () {
+                $scope.message="";
+            }
+
+
+        });
+
+
+    </script>
+</head>
+<body class="container" ng-app="MyApp" style="margin-top: 10px">
+
+  <div class="container" ng-controller="TextAreaWithLimitCtrl">
+      <div class="row">
+          <textarea class="input-lg" ng-model="message">{{message}}</textarea>
+      </div>
+      <div class="row">
+          <button class="btn-default" ng-disabled="!hasValidLength()" ng-click="send()">Send</button>
+          <button class="btn-danger"  ng-click="clear()">Clear</button>
+          <span ng-class="{'text-warning':shouldWarn()}">剩余:{{remain()}}</span>
+      </div>
+  </div>
+</body>
+</html>

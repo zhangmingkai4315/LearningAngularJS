@@ -1,0 +1,63 @@
+<!doctype html>
+<html ng-app="MyApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Angular JS Examples</title>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+              //  alert(HelloCtrl);
+            });
+            var myAppModule=angular.module("MyApp",[]);
+             myAppModule.controller('HelloCtrl', function ($scope) {
+                $scope.name="World";
+//
+                 $scope.population=1000;
+                $scope.countries=[
+                    {
+                        name:"China",Population:120
+                    },
+                    {
+                        name:"USA",
+                        Population:61
+                    }
+                ];
+
+                 $scope.WorldPercentage= function (countryPopulation) {
+                     return countryPopulation/($scope.population)*100;
+                 };
+
+//              自定义getName函数
+
+                $scope.getName= function () {
+                    return $scope.name;
+                };
+
+            });
+
+        </script>
+
+
+    </head>
+    <body class="container">
+
+    <!--<input class="input-lg" type="text" ng-model="name">-->
+    <!--<h1>Hello {{name}}!</h1>-->
+
+    <div ng-controller="HelloCtrl">
+        Say hello to :<input type="text" ng-model="name">
+        <h1>Hi:{{getName()}}</h1>
+        <ul>
+            <li ng-repeat="country in countries">
+                {{country.name}} has population:{{country.Population}},{{WorldPercentage(country.Population)}}%
+            </li>
+        </ul>
+
+    </div>
+
+    </body>
+</html>

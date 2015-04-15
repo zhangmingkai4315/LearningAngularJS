@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        var angularModule=angular.module("App",[]);
+    </script>
+
+</head>
+<body>
+   <div class="container" ng-init="tags=['hello','world','mingkai','balalala']">
+       <h1>Name:</h1><br>
+       <input type="text" ng-model="name">{{name}}
+       <ul>
+           <li ng-repeat="tag in tags">{{tag}}</li>
+       </ul>
+   </div>
+
+
+   <div class="container" ng-init="names=[{name:'zhang',city:'beijing'},{name:'ming',city:'Nanjing'},{name:'Han',city:'NewYork'}]">
+       <h1>Search:</h1><br>
+       <p>Example-2</p>
+       <input type="text" ng-model="search_name">
+       <ul>
+           <li ng-repeat="people in names|filter:search_name">Name:{{people.name}}-----City:{{people.city}}</li>
+       </ul>
+   </div>
+  <hr>
+
+   <script>
+       angularModule.controller('SimpleController', function ($scope) {
+           $scope.customers=[{name:'zhang',city:'beijing'},{name:'ming',city:'Nanjing'},{name:'Han',city:'NewYork'}];
+       })
+   </script>
+    <div class="container" ng-controller="SimpleController">
+        <p>Example-3</p>
+        <ul>
+            <li ng-repeat="people in customers|filter:search_name">Name:{{people.name}}-----City:{{people.city}}</li>
+        </ul>
+
+    </div>
+</body>
+</html>

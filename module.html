@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <style>
+
+    </style>
+    <title></title>
+</head>
+<body ng-app="Hello">
+<div class="container" style="margin-top: 10px">
+<div ng-controller="HelloCtrl">
+    <p class="text-warning">{{name}}</p>
+    <input type="text" class="input-lg" ng-model="name">
+    <!--{{appStarted}}-->
+</div>
+</div>
+<footer>
+    <script>
+  //      var angularModule=angular.module("Hello",[]);
+  //example-1 run方法
+//        angular.module("Hello",[]).run(function ($rootScope) {
+//            $rootScope.appStarted=new Date();
+//        });
+//        angularModule.controller("HelloCtrl", function ($scope) {
+//            $scope.name="Hello world";
+//
+//        });
+//example-2 定义常规的类对象和方法
+//        var NotificationService= function () {
+//            this.Max_Len=10;
+//
+//            //这里绑定了一个对象的特定实例
+//
+//            this.notificationArchive=new NotificationArchive();
+//            this.notifications=[];
+//        };
+//
+//        NotificationService.prototype.push= function (notification) {
+//            var newLen,notificationToArchive;
+//            newLen=this.notifications.unshift(notification);
+//            if(newLen>this.Max_Len)
+//            {
+//                notificationToArchive=this.notifications.pop();
+//                this.notificationArchive.archive(notificationToArchive);
+//            }
+//        };
+//        NotificationService.prototype.getCurrent=function(){
+//            return this.notifications;
+//        };
+        //example-3 以下是使用factory注册对象创建方案：
+
+//        angularModule.factory('notificationService', function (notificationArchive) {
+//            var MAX_LEN=10;
+//            var notifications=[];
+//
+//            return {
+//                push:function(notication){
+//                    var notificationToArchive;
+//                    var newLen=notifications.unshift(notication);
+//                    if(newLen>MAX_LEN){
+//                        notificationToArchive=this.notifications.pop();
+//                        notificationArchive.archive(notificationToArchive);
+//                    }
+//                },
+//                getCurrent: function () {
+//                    return notifications;
+//                }
+//
+//            }
+//        });
+
+
+
+
+
+        //example -4 更加明朗的使用方式：
+
+        angular.module('Hello',['engines','cars'])
+                .controller('HelloCtrl', function ($scope,car) {
+                    car.start();
+                });
+        angular.module('cars',[]).factory('car', function ($log,dieselEngine) {
+            return {
+                start: function () {
+                    $log.info('Starting'+dieselEngine.type);
+                }
+            }
+        })
+        .factory('dieselEngine',function(){
+                    return {
+                        type:'custom diesel'
+                    };
+                });
+        angular.module('engines',[]).factory('dieselEngine',function(){
+            return{
+                type:'Engine diesel'
+            };
+        });
+
+
+    </script>
+</footer>
+</body>
+</html>

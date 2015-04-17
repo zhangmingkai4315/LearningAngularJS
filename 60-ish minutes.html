@@ -35,7 +35,8 @@
    <script>
        angularModule.controller('SimpleController', function ($scope) {
            $scope.customers=[{name:'zhang',city:'beijing'},{name:'ming',city:'Nanjing'},{name:'Han',city:'NewYork'}];
-       })
+       });
+
    </script>
     <div class="container" ng-controller="SimpleController">
         <p>Example-3</p>
@@ -44,5 +45,29 @@
         </ul>
 
     </div>
+
+   <div class="container" ng-controller="FirstController">
+       <p>Example-4</p>
+       {{title}}
+       <script>
+           var controllers={};
+            controllers.FirstController=function($scope){
+               $scope.title="FirstController";
+           };
+           controllers.SecondController=function($scope){
+               $scope.title="SecondController";
+           };
+
+           angularModule.controller(controllers);
+       </script>
+   </div>
+
+
+
+
+
+
+
+
 </body>
 </html>

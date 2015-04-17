@@ -1,24 +1,21 @@
-<!doctype html>
-<html ng-app="phonecatApp">
-<head>
-    <meta charset="utf-8">
-    <title>Angular JS Examples</title>
+<!DOCTYPE html>
+<html ng-app="App">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-
-    <style>
-        .text-warning{
-            color:red;
-        }
-    </style>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script>
+
+        //定义两个新的控制器模块，并放入模块中
         var phonecatControllers = angular.module('phonecatControllers', []);
 
         phonecatControllers.controller('PhoneListCtrl', ['$scope', '$http',
             function ($scope, $http) {
-                $http.get('phones/phones.json').success(function(data) {
+                $http.get('phones.json').success(function(data) {
                     $scope.phones = data;
                 });
 
@@ -29,34 +26,42 @@
             function($scope, $routeParams) {
                 $scope.phoneId = $routeParams.phoneId;
             }]);
+
+
     </script>
     <script>
-        var phonecatApp = angular.module('phonecatApp', [
-            'ngRoute',
-            'phonecatControllers'
-        ]);
-        phonecatApp.config(['$routeProvider',
+        var angularModule=angular.module("App",['ngRoute','phonecatControllers']);
+        angularModule.config(['$routeProvider',
             function($routeProvider) {
                 $routeProvider.
                         when('/phones', {
-                            templateUrl: 'Partials/View1.html',
+                            templateUrl: 'partials/View1.html',
                             controller: 'PhoneListCtrl'
                         }).
                         when('/phones/:phoneId', {
-                            templateUrl: 'Partials/View2.html',
+                            templateUrl: 'partials/View2.html',
                             controller: 'PhoneDetailCtrl'
                         }).
                         otherwise({
                             redirectTo: '/phones'
                         });
             }]);
-
-
-
     </script>
 </head>
-<body class="container"  style="margin-top: 10px">
+<body>
+<script>
+    angularModule.controller('SimpleController', function ($scope) {
+        $scope.customers=[{name:'zhang',city:'beijing'},{name:'ming',city:'Nanjing'},{name:'Han',city:'NewYork'}];
+        $scope.addCustomer=function(){
+            $scope.customers.push({name:$scope.newCustomer.name,city:$scope.newCustomer.city});
+        }
+    });
 
+</script>
+<div class="container">
+  <div ng-view></div>
+
+</div>
 
 </body>
 </html>

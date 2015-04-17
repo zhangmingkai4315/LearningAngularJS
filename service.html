@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+
+</head>
+<body>
+
+<script>
+    var moduleApp=angular.module('App',[]);
+    moduleApp.service('Book',['$rootScope', function ($rootScope) {
+        var services = {
+            books: [
+                {
+                    "title": "Magician", author: "Raymond E.Feist"
+                },
+                {
+                    title: "The Hobidd", author: "JR TOLKIEN"
+                }
+            ],
+            addBooks: function (book) {
+                services.books.push(book);
+                $rootScope.$broadcast('books.update');
+            }
+
+        };
+        return services;
+    }]);
+
+
+    var ctrl=['$scope','Book', function ($scope,Book) {
+        $scope.$on('books.update', function (event) {
+            $scope.books=Book.books;
+        });
+        $scope.books=Book.books;
+    }];
+    moduleApp.controller('books.list',ctrl);
+
+
+    moduleApp.directive('addBookButton',['Book', function (Book) {
+        return{
+            restrict:'A',
+            link: function (scope,element,attrs) {
+                element.bind('click',function(){
+                    Book.addBooks({title:"Star Wars",author:'eorge Lucas'});
+                });
+            }
+        }
+    }]);
+
+
+
+</script>
+<div ng-controller="books.list">
+<button add-book-button>AddBook</button>
+<ul>
+    <li ng-repeat="book in books">{{book.title}}/{{book.author}}</li>
+</ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module('MyApp',[]);
+        app.service('myService', function ($http,$q) {
+            var baseUrl="https://itunes.apple.com/search?term=";
+            var _artist='';
+            var _finalUrl='';
+            var makeUrl= function () {
+                _artist=_artist.split(' ').join('+');
+                _finalUrl=baseUrl+_artist+'&callback=JSON_CALLBACK';
+                return _finalUrl;
+            };
+            this.setArtist=function(artist){
+                _artist=artist;
+            };
+            this.getArtist=function(){
+                return _artist;
+            };
+            this.callItunes=function(){
+
+                makeUrl();
+                var deferred=$q.defer();
+                $http({
+                    method:'JSONP',
+                    url:_finalUrl
+                }).success(function(data){
+                    deferred.resolve(data);
+                }).error(function(){
+                    deferred.reject('There was an error');
+                });
+                return deferred.promise;
+            }
+        });
+        app.controller('myServiceCtrl', function ($scope,myService) {
+            $scope.data={};
+            $scope.updateArtist= function () {
+                myService.setArtist($scope.artist);
+            };
+
+            $scope.SubmitArtist=function(){
+                $scope.updateArtist();
+                myService.callItunes().then(function(data){
+                    $scope.data.artistData=data;
+                },function(data){
+                    alert(data);
+                });
+
+            }
+
+        });
+
+    </script>
+</head>
+<body ng-controller="myServiceCtrl">
+<input type="text" ng-model="artist">
+<button type="button" ng-click="SubmitArtist()">Submit</button>
+{{data}}
+
+
+</body>
+</html>

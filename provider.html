@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+      var app=angular.module('MyApp',[]);
+        app.provider('myProvider',function(){
+            var baseUrl="https://itunes.apple.com/search?term=";
+            var _artist='';
+            var _finalUrl='';
+            var makeUrl= function () {
+                _artist=_artist.split(' ').join('+');
+                _finalUrl=baseUrl+_artist+'&callback=JSON_CALLBACK';
+                return _finalUrl;
+            };
+            this.thingFromConfig='';
+            this.$get=function($http,$q){
+                return{
+                    callItunes:function(){
+                        makeUrl();
+                        var deferred=$q.defer();
+                        $http({
+                            method:'JSONP',
+                            url:_finalUrl
+                        }).success(function(data){
+                            deferred.resolve(data);
+                        }).error(function(){
+                            deferred.reject('There was an error');
+                        });
+                        return deferred.promise;
+                    },
+                    setArtist:function(artist){
+                    _artist=artist;
+                     },
+                    getArtist:function(){
+                        return _artist;
+                    },
+                    thingOnConfig:this.thingFromConfig
+                }
+            }
+
+        });
+
+      app.config(function (myProviderProvider) {
+          myProviderProvider.thingFromConfig="Setting in app.config"
+      });
+
+      app.controller('myProviderCtrl', function ($scope,myProvider) {
+          $scope.data={};
+          $scope.updateArtist= function () {
+              myProvider.setArtist($scope.artist);
+          };
+
+          $scope.SubmitArtist=function(){
+              $scope.updateArtist();
+              myProvider.callItunes().then(function(data){
+                  $scope.data.artistData=data;
+              },function(data){
+                  alert(data);
+              });
+          };
+          $scope.data.thingFromConfig=myProvider.thingOnConfig;
+
+      });
+
+    </script>
+</head>
+<body ng-controller="myProviderCtrl">
+<input type="text" ng-model="artist">
+<button type="button" ng-click="SubmitArtist()">Submit</button>
+{{data}}
+
+
+</body>
+</html>

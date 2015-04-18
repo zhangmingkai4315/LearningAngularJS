@@ -18,7 +18,7 @@
            };
        };
 
-       var controllerTest=app.controller('controllerTest',['$q','$log', function ($q,$log) {
+       var controllerTest_1=app.controller('controllerTest_1',['$q','$log', function ($q,$log) {
            var pawel=new Person('Marrt',$log);
 
 
@@ -39,11 +39,44 @@
            //$scope.$digest();
        }]);
 
+     var Restaurant=app.service('Restaurant', function ($q,$rootScope) {
+         var currentOrder;
+         this.takeOrder= function (orderItems) {
+             currentOrder={
+                 deffered:$q.defer(),
+                 items:orderItems
+             };
+             return currentOrder.deffered.promise;
+         };
+         this.deliverOrder= function () {
+             currentOrder.deffered.resolve(currentOrder.items);
+          //   $rootScope.$digest();
+         };
+         this.problemWithOrder= function (reson) {
+             currentOrder.deffered.reject(reson);
+           //  $rootScope.$digest();
+         };
+
+     });
+
+       var controllerTest_2=app.controller('controllerTest_2',['Restaurant','$log',function(Restaurant,$log){
+           var pawel=new Person('Marrt',$log);
+           var KEVIC=new Person('kEVIC',$log);
+            var bananeDelive=Restaurant.takeOrder("Banane");
+           bananeDelive.then(pawel.eat,pawel.beHungry);
+           bananeDelive.then(KEVIC.eat,KEVIC.beHungry);
+             Restaurant.problemWithOrder("Wrone");
+       }]);
+
 
    </script>
 </head>
 <body>
-<div ng-controller="controllerTest">
+<!--<div ng-controller="controllerTest_1">-->
+
+<!--</div>-->
+
+<div ng-controller="controllerTest_2">
 
 </div>
 </body>

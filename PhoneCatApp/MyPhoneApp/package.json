@@ -1,0 +1,22 @@
+{
+  "name": "MyPhoneApp",
+  "version": "1.0.0",
+  "description": "PhoneApp,Angularjs,Nodejs",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Angularjs",
+    "nodejs"
+  ],
+  "author": "mingkai",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.12.3",
+    "express-handlebars": "^2.0.0"
+  }
+}

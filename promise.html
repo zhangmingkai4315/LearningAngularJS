@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Promise Function example</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+   <script>
+       var app=angular.module("MyApp",[]);
+       var Person= function (name,$log) {
+           this.eat= function (food) {
+               $log.info(name+' is eatting delicious '+food);
+           };
+           this.beHungry=function(reason){
+               $log.warn(name+" is hungry because : "+reason);
+           };
+       };
+
+       var controllerTest=app.controller('controllerTest',['$q','$log', function ($q,$log) {
+           var pawel=new Person('Marrt',$log);
+
+
+           //1 创建延迟绑定的对象任务，我要去送披萨，但是不知道能不能完成呀。
+           var pizzaOrderFulfillment=$q.defer();
+
+           //2. 貌似客户对这个任务感兴趣（当然感兴趣了，我点的嘛），送给他一个Promise,承诺完成或者结束了告诉她
+           var pizzaDelivered=pizzaOrderFulfillment.promise;
+
+           //3. 我只要知道了送披萨这个事情的结果，我好决定做什么事情。做自己想做的（吃披萨），失败了就生气！
+           pizzaDelivered.then(pawel.eat,pawel.beHungry);
+
+           //4. 任务成功了，她应该能做自己想做的事情啦
+           pizzaOrderFulfillment.resolve("pizza");
+
+           //5. 任务好像失败了，没关系 告诉她 她好像会生气。
+           pizzaOrderFulfillment.reject('waiting too long');
+           //$scope.$digest();
+       }]);
+
+
+   </script>
+</head>
+<body>
+<div ng-controller="controllerTest">
+
+</div>
+</body>
+</html>

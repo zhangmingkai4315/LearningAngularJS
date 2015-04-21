@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+</head>
+<body>
+<script>
+    var app=angular.module("MyApp",[]);
+    var controller=app.controller("Controller-1", function ($scope) {
+        $scope.listName=["mingkai","zhang","hello"];
+
+    });
+</script>
+
+<div ng-controller="Controller-1">
+    <li ng-repeat="name in listName">
+        <span class="divider">Hello world</span>
+        <ng-switch on="$middle">
+            <span ng-switch-when="true">{{name}}</span>
+            <span ng-switch-default="">Defult</span>
+        </ng-switch>
+    </li>
+</div>
+</body>
+</html>

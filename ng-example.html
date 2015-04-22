@@ -1,3 +1,4 @@
+实现了一个点击标题头部即可排序的例子
 <!DOCTYPE html>
 <html ng-app="MyApp">
 <head lang="en">
@@ -12,19 +13,55 @@
 <script>
     var app=angular.module("MyApp",[]);
     var controller=app.controller("Controller-1", function ($scope) {
-        $scope.listName=["mingkai","zhang","hello"];
-
+        $scope.listName=[
+            {name:"zhangmingkai",
+            job:"enginner"
+            },{name:"Mark",
+             job:"baner"
+            },{name:"Alice",
+                job:"Actress"
+            }];
+        $scope.reverse=false;
+   $scope.sort= function (fieldName) {
+       if($scope.sortField===fieldName){
+           $scope.reverse=!$scope.reverse;
+       }else{
+           $scope.sortField=fieldName;
+           $scope.reverse=false;
+       }
+   };
     });
 </script>
 
+<script>
+    app.filter('logUppercase', function (uppercaseFilter) {
+        return function (input) {
+            console.log('Calling uppercase on :'+input);
+            return uppercaseFilter(input);
+        };
+    });
+</script>
+
+
+
+
 <div ng-controller="Controller-1">
-    <li ng-repeat="name in listName">
-        <span class="divider">Hello world</span>
-        <ng-switch on="$middle">
-            <span ng-switch-when="true">{{name}}</span>
-            <span ng-switch-default="">Defult</span>
-        </ng-switch>
-    </li>
+    <input type="text" ng-model="search">
+    <table>
+   <thead>
+   <th ng-click="sort('name')">Name</th>
+   <th ng-click="sort('job')">Job</th>
+   </thead>
+    <tbody>
+    <tr ng-repeat="item in filterLeft=(listName|filter:search|orderBy:sortField:reverse)">
+        <td>{{item.name}}</td>
+        <td>{{item.job}}</td>
+    </tr>
+    </tbody>
+        Total:{{filterLeft.length}}
+    </table>
+
+    <input type="text" ng-model="name">{{name|logUppercase}}
 </div>
 </body>
 </html>

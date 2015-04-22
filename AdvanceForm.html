@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        var controller=app.controller("Controller-Form",["$scope",function ($scope) {
+            $scope.oneWayData="OneWay";
+            $scope.DoubleWayData="DoubleWay";
+        }]);
+    </script>
+</head>
+<body>
+<div class="container">
+
+<h1>User Info</h1>
+<label>E-mail</label>
+<input type="email" ng-model="user.email">
+
+<label>Last name</label>
+<input type="text" ng-model="user.lastName">
+<label>First name</label>
+<input type="text" ng-model="user.firstName">
+<label>WebSite</label>
+<input type="url" ng-model="user.website">
+<label>Description</label>
+<textarea ng-model="user.description"></textarea>
+
+<label>Password</label>
+<input type="password" ng-model="user.password">
+
+<label>Password (Repeat)</label>
+<input type="password" ng-model="user.repeatPassword" ng-minlength="3" ng-maxlength="10" ng-pattern="/^.*(?=.*\d)(?=.*[a-zA-Z]).*$/">
+
+<label>Roles</label>
+<label class="checkbox">
+    <input type="checkbox" ng-model="user.admin">Is Admin
+</label>
+<label>Sex</label>
+    <input type="radio" ng-model="user.sex" value="male">Male
+    <input type="radio" ng-model="user.sex" value="female">Female
+
+
+
+<pre ng-bind="user|json"></pre>
+
+
+
+</div>
+
+
+<div class="container" ng-controller="Controller-Form">
+    <input type="text" ng-bind="oneWayData">
+    <div>Hello {{oneWayData}}</div>
+    <div>Hello <input ng-model="DoubleWayData"></div>
+    <div>Hello {{DoubleWayData}}</div>
+</div>
+</body>
+</html>

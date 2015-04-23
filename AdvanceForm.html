@@ -12,10 +12,38 @@
         var controller=app.controller("Controller-Form",["$scope",function ($scope) {
             $scope.oneWayData="OneWay";
             $scope.DoubleWayData="DoubleWay";
+
+            $scope.countriesByCode = {
+                'AF' : 'AFGHANISTAN',
+                'AX' : 'ÅLAND ISLANDS',
+                'AL' : 'ALBANIA',
+                'DZ' : 'ALGERIA',
+                'AS' : 'AMERICAN SAMOA',
+                'AD' : 'ANDORRA',
+                'AO' : 'ANGOLA',
+                'AI' : 'ANGUILLA',
+                'AQ' : 'ANTARCTICA',
+                'AG' : 'ANTIGUA AND BARBUDA',
+                'AR' : 'ARGENTINA',
+                'AM' : 'ARMENIA',
+                'AW' : 'ARUBA',
+                'AU' : 'AUSTRALIA',
+                'AT' : 'AUSTRIA',
+                'AZ' : 'AZERBAIJAN',
+                'BS' : 'BAHAMAS',
+                'BH' : 'BAHRAIN',
+                'BD' : 'BANGLADESH',
+                'BB' : 'BARBADOS',
+                'BY' : 'BELARUS',
+                'BE' : 'BELGIUM',
+                'BZ' : 'BELIZE',
+                'BJ' : 'BENIN',
+                'BM' : 'BERMUDA'
+            };
         }]);
     </script>
 </head>
-<body>
+<body ng-controller="Controller-Form">
 <div class="container">
 
 <h1>User Info</h1>
@@ -44,8 +72,11 @@
 <label>Sex</label>
     <input type="radio" ng-model="user.sex" value="male">Male
     <input type="radio" ng-model="user.sex" value="female">Female
+<br>
+    <label>Select a country code by country name, ordered by country code</label>
 
-
+    <select ng-model="chosenCountryCode" ng-options="code as name for (code, name) in countriesByCode"></select>
+    Selected Country Code: {{ chosenCountryCode }}
 
 <pre ng-bind="user|json"></pre>
 

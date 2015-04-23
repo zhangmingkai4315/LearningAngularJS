@@ -7,9 +7,32 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <title></title>
+    <style>
+        .ng-valid.ng-dirty{
+            border: solid #008000 3px;
+        }
+        .ng-invalid.ng-dirty{
+            border:solid #ff0000 3px;
+        }
+    </style>
     <script>
         var app=angular.module("MyApp",[]);
         var controller=app.controller("Controller-Form",["$scope",function ($scope) {
+
+            $scope.getCssClasses= function (ngModelController) {
+                return{
+                    error:ngModelController.$invalid&&ngModelController.$dirty,
+                    success:ngModelController.$valid&&ngModelController.$dirty
+                };
+            };
+
+
+            $scope.showError=function(ngModelController,error){
+                return ngModelController.$error[error];
+            };
+            $scope.canSave=function(){
+                return $scope.userInfoForm.$valid&&$scope.userInfoForm.$dirty;
+            };
             $scope.oneWayData="OneWay";
             $scope.DoubleWayData="DoubleWay";
 
@@ -40,10 +63,39 @@
                 'BJ' : 'BENIN',
                 'BM' : 'BERMUDA'
             };
+
         }]);
+
     </script>
 </head>
 <body ng-controller="Controller-Form">
+<div class="container">
+
+
+<h1>Example-1</h1>
+<form name="userInfoForm">
+    <div class="control-group" ng-class="getCssClasses(userInfoForm.email)">
+        <label>E-maill</label>
+        <input type="email" ng-model="user.email" name="email" required>
+        <span ng-show="showError(userInfoForm.email,'email')">
+            You must enter a valid email
+        </span>
+          <span ng-show="showError(userInfoForm.email,'required')">
+            This field is required
+        </span>
+
+    </div>
+    <button ng-disabled="!canSave()">Save</button>
+</form>
+
+
+
+</div>
+
+
+
+
+<h1>Example-2</h1>
 <div class="container">
 
 <h1>User Info</h1>

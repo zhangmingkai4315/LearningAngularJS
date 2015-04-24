@@ -1,38 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="MyApp">
 <head>
 	<title>系统监控组周报提交入口</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/customer.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/docs.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/typing.css">
+	<link rel="stylesheet" type="text/css" href="/css/customer.css">
+	<link rel="stylesheet" type="text/css" href="/css/home.css">
+	<link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.min.css">
+	<script type="text/javascript" src="/static/angular/angular.js"></script>
+	<script type="text/javascript" src="/static/angular-animate/angular-animate.min.js"></script>
+	<script type="text/javascript" src="/js/customer.js"></script>
+
 </head>
-<body id="example" class="index pushable" ontouchstart="" data-twttr-rendered="true">
+<body id="example" class="index pushable" ng-controller="mainController">
 	<div class="pusher">
-		<div class="full height">
-			<div class="masthead segment">
-				<div class="ui page grid">
-					<div class="column">
-     					 <div class="introduction">
-      					  <h1 class="ui header">
-         					<span class="library transition visible">
-           					 ReportSystem
-          					</span>
-       						<div id="source" style="display: none"><small>欢迎使用此页面提交个人周报</small>
-       						</div>
-	  						<div id="output-wrap">
-							<span id="output"></span>
-        					<span class="typing-cursor">|</span><hr><span>系统监控组</span>
-          					</div>
-        				  </h1>
-        				  <div class="ui hidden divider"></div>
-        				  <a href="/login" class="ui huge basic inverted teal download button">登陆系统</a>         
-	  					  </div>
-    				</div>
-				</div>
-			</div>
+	            <div class="full height">
+			      <div class="masthead segment">
+			        <div class="ui page grid">
+			          <div class="column">
+	        			<div class="MainPage {{viweClass}}" ng-view>
 			
+						</div>
+						</div>
+						</div>
+						</div>
+						
 			<div class="ui email alternate stripe vertical segment">
 				  <div class="ui center aligned page grid">
 				    <div class="column">
@@ -44,7 +36,7 @@
 				          <div class="ui huge input">
 				            <input type="text" name="EMAIL" data-validate="email" placeholder="E-mail">
 				          </div>
-				          <button type="submit" class="ui huge green submit button">
+				          <button type="submit" class="ui huge primary submit button">
 				            注册
 				          </button>
 				        </div>
@@ -63,20 +55,22 @@
 	
 </footer>
 <script type="text/javascript" src="/static/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="/static/angular/angular.min.js"></script>
+
+<script type="text/javascript" src="/static/angular-route/angular-route.js"></script>
 <script type="text/javascript" src="/static/semantic/dist/semantic.js"></script>
-<script type="text/javascript" src="/static/typing.js"></script>
-<script type="text/javascript" src="/static/js/customer.js"></script>
+<script type="text/javascript" src="/js/home.js"></script>
+
 <!--[if lt IE 9]>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.min.js"></script>
 <![endif]-->
+<script src="/static/typed.js/dist/typed.min.js"></script>
 <script>
-  var typing = new Typing({
-    source: document.getElementById('source'),
-    output: document.getElementById('output'),
-    delay: 100
-  });
-  typing.start();
+    $(function(){
+        $("#source").typed({
+            strings: ["填写周报^500", "管理任务^500","查看进度"],
+            typeSpeed: 100
+        });
+    });
 </script>
 
 

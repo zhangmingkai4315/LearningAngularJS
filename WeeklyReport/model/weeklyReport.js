@@ -9,7 +9,7 @@ var weeklyReportSchema=mongoose.Schema({
 	remark:String
 });
 
-var weeklyReport=mongoose.model('weeklyReport',weeklyReportSchema);
+var WeeklyReport=mongoose.model('weeklyReport',weeklyReportSchema);
 module.exports=WeeklyReport;
 
 if(require.main == module){

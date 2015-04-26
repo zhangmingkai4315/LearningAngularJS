@@ -12,45 +12,11 @@
 	<script type="text/javascript" src="/js/customer.js"></script>
 
 </head>
-<body id="example" class="index pushable" ng-controller="mainController">
-	<div class="pusher">
-	            <div class="full height">
-			      <div class="masthead segment">
-			        <div class="ui page grid">
-			          <div class="column">
-	        			<div class="MainPage {{viweClass}}" ng-view>
-			
-						</div>
-						</div>
-						</div>
-						</div>
-						
-			<div class="ui email alternate stripe vertical segment">
-				  <div class="ui center aligned page grid">
-				    <div class="column">
-				      <h3 class="ui header">
-				        您可以填写邮件地址，每周五下午将收到系统发送的邮件提示及链接
-				      </h3>
-				      <form class="ui form" method="post" action="/registerEmail">
-				        <div class="field">
-				          <div class="ui huge input">
-				            <input type="text" name="EMAIL" data-validate="email" placeholder="E-mail">
-				          </div>
-				          <button type="submit" class="ui huge primary submit button">
-				            注册
-				          </button>
-				        </div>
-				      </form>
-				    </div>
-				  </div>
-			</div>
+<body id="example" class="index icon pushable">
+<div class="MainPage" ng-view>
 
-		    
-    </div>
-  </div>
 </div>
-		</div>
-	</div>
+
 <footer>
 	
 </footer>
@@ -71,6 +37,7 @@
             typeSpeed: 100
         });
     });
+    
 </script>
 
 

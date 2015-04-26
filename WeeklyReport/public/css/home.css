@@ -54,6 +54,11 @@
   margin: 0em;
   padding: 15rem 0em;
 }
+
+#example .masthead .showList{
+  margin: 0em;
+  padding: 2rem 0em;
+}
 #example.index .following.bar iframe.github {
   margin-top: 0px;
 }

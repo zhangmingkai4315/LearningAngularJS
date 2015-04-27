@@ -1,13 +1,14 @@
 <script type="text/javascript-lazy">
     $(function(){
         $("#source").typed({
-            strings: ["填写周报^500", "管理任务^500","查看进度"],
+            strings: ["欢迎注册使周报管理系统"],
             typeSpeed: 100
         });
     	semantic_home.ready();
-    })();
+    });
     
 </script>
+
 <div class="pusher">
 	    <div class="full height">
 			<div class="masthead segment"> 
@@ -38,42 +39,31 @@
 							</div>
 							<div class="required field">
 							     <div class="ui icon input">
-							        <input type="password" placeholder="登录密码" ng-model="user.password">
+							        <input type="text" placeholder="真实姓名" ng-model="realname">
+							        <i class="user icon"></i>
+							     </div>
+							</div>
+							<div class="required field">
+							     <div class="ui icon input">
+							        <input type="password" placeholder="注册密码" ng-model="user.password">
+							        <i class="lock icon"></i>
+							     </div>
+							</div>
+							<div class="required field">
+							     <div class="ui icon input">
+							        <input type="password" placeholder="确认密码" ng-model="repassword">
 							        <i class="lock icon"></i>
 							     </div>
 							</div>
 						</div>
 						</form> 
 						<br>
-						<a ng-click="login()" class="ui basic inverted teal  button">登陆系统</a>
-						<a href="#/register" class="ui basic inverted teal  button">注册登录</a>
-						<a href="#/showList" class="ui basic inverted teal  button">离线查看</a>
-
+						<a href="#/login" ng-click="register()" class="ui huge basic inverted teal download button">注册登录</a>
+						<a href="#/" class="ui huge basic inverted teal download button">返回登录</a>
+						
 					</div>
 				</div>
 
 			</div>
 		</div>
-
-	
-
-						
-	<div class="ui email alternate stripe vertical segment">
-		<div class="ui center aligned page grid">
-			<div class="column">
-				<h3 class="ui header">
-				        您可以填写邮件地址，每周五下午将收到系统发送的邮件提示及链接
-				 </h3>
-				<form class="ui form" method="post" action="/registerEmail">
-				<div class="field">
-				    <div class="ui huge input">
-				        <input type="text" name="EMAIL" data-validate="email" placeholder="E-mail">
-				    </div>
-				        <button type="submit" class="ui huge primary submit button">
-				            注册
-				        </button>
-				</div>
-				</form>
-			</div>
-		</div>
-	</div>
+</div>

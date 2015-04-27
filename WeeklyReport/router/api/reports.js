@@ -11,7 +11,7 @@ router.use(function(req,res,next){
 	  return res.redirect('/#login');
 	}
 	return next();
-})
+});
 
 router.route('/:id/reports')
 	.get(function(req,res){

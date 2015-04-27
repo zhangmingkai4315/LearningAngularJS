@@ -18,7 +18,7 @@ module.exports = function(passport){
 
 	//Desieralize user will call with the unique id provided by serializeuser
 	passport.deserializeUser(function(id, done) {
-		console.log("DeserializeUser");
+		console.log("DeserializeUser:"+id);
 
 		User.findById(id,function(err,user){
 			if(err){
@@ -47,7 +47,7 @@ module.exports = function(passport){
 				if(!isValidPassword(user,password)){
 					return done('Incorrect password',false);
 				}else{
-					console.log('debug1');
+					
 					return done(null,user);
 				}
 			});
@@ -60,28 +60,31 @@ module.exports = function(passport){
 		},
 		function(req, username, password, done) {
 
-			User.findOne({username:username},function(err,doc){
+			User.findOne({'username':username},function(err,doc){
 				if(err){
 					return done('Db error'+err,false);
 				}
 				if(doc){
 					return done('Username already taken',false);
+				}else{	var user=new User({
+							username:username,
+							password:createHash(password),
+							realname:req.body.realname
+						});
+
+						user.save(function(err,user){
+							if(err){
+								return done(err,false);
+
+							}
+							console.log('sucessfully sign up');
+							return done(null,user);
+						});
+
 				}
 			});
 
-			var user=new User({
-				username:username,
-				password:createHash(password)
-			});
-
-			user.save(function(err,user){
-				if(err){
-					return done(err,false);
-
-				}
-				console.log('sucessfully sign up');
-				return done(null,user);
-			});
+		
 	}));
 	
 	var isValidPassword = function(user, password){

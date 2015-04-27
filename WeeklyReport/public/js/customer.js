@@ -10,9 +10,6 @@ var app=angular.module('MyApp', ["ngRoute","ngAnimate"]).run(function($rootScope
 	
 });
 
-
-
-
 app.config(function($routeProvider) {
 	$routeProvider
 		.when('/',{
@@ -26,6 +23,10 @@ app.config(function($routeProvider) {
 		.when('/showList',
 			{templateUrl:'tpls/showList.html',
 			controller: 'showListController'
+		})
+		.when('/showUsers',
+			{templateUrl:'tpls/showUsers.html',
+			controller: 'showUsersController'
 		})
 		.when('/users/show/:id',{
 			templateUrl:'tpls/users/show.html',
@@ -45,6 +46,9 @@ app.factory('reportService', ['$http', function($http){
 	reportService.getAll=function(){
 		return $http.get('/api/12/reports');
 	}
+	reportService.getAllUsers=function(){
+		return $http.get('/api/users');
+	}
 	return reportService;
 }])
 
@@ -62,6 +66,7 @@ app.controller('registerController', function($location,$scope,$http,$rootScope,
 	$scope.viweClass="registerClass";
 	$scope.user={username:"",password:""};
 	$scope.error_message="";
+	$scope.showWarning=1;
 	$scope.register=function(){
 		if($scope.user.password!=$scope.repassword){
 			$scope.error_message="两次输入密码不一致";
@@ -73,10 +78,11 @@ app.controller('registerController', function($location,$scope,$http,$rootScope,
 			$rootScope.user=data.user.username;
 			$location.path('/profile');
 			}
-			else{
-				$scope.error_message=data;
-			}
+			
 
+		}).error(function(data){
+			$scope.showWarning=0;
+			$scope.error_message=data;
 		});
 	}
 	
@@ -91,11 +97,24 @@ app.controller('showListController', function($scope,reportService,$log){
 
 });
 
+app.controller('showUsersController', function($scope,reportService,$log){
+	$scope.viweClass="showUsersClass";
+	$scope.dateTime=new Date().toLocaleDateString();
+	reportService.getAllUser().success(function(data){
+		$scope.reports=data;
+		$log.info(data);
+	});
+
+});
+
+
+
+
 app.controller('indexController', function($scope,$rootScope,$http,$location){
 	$scope.viweClass="indexClass";
 	$scope.user={username:"",password:""};
 	$scope.error_message="";
-
+	$scope.showWarning=1;
 	$scope.login=function(){
 		$http.post('/auth/login',$scope.user).success(function(data){
 			if(data.user){
@@ -104,8 +123,12 @@ app.controller('indexController', function($scope,$rootScope,$http,$location){
 			$location.path('/profile');
 			}else{
 				$scope.error_message=data;
+				alert(data);
 			}
 
+		}).error(function(data){
+			$scope.showWarning=0;
+			$scope.error_message=data;
 		});
 	}
 });

@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 var mongoose=require('mongoose');
+var flash = require('connect-flash');
+
 
 mongoose.connect("mongodb://127.0.0.1/weekReports");
 var Users=require('./model/Users');
@@ -14,12 +16,18 @@ var session=require('express-session');
 var cookieParser=require('cookie-parser');
 var bodyParser=require('body-parser');
 var authenticate=require('./router/authentication')(passport);
-app.use(session({
-	secret:'super secret'
-}));
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(cookieParser('keyboard cat'));
+app.use(session({
+	secret:'super secret',
+	cookie: { maxAge: 60000 }
+}));
+
+app.use(flash());
+
 
 
 app.use(passport.initialize());

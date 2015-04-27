@@ -28,7 +28,10 @@
 					<div class="one wide column"></div>
 					<div class="five wide column">
 						<br>
+						<div class="ui red message" ng-hide="showWarning">
 						<span>{{error_message}}</span>
+						</div>
+						
 						<form class="ui form">
 						<div class="wide column ">
 							<div class="required field">
@@ -58,7 +61,7 @@
 						</div>
 						</form> 
 						<br>
-						<a href="#/login" ng-click="register()" class="ui huge basic inverted teal download button">注册登录</a>
+						<a ng-click="register()" class="ui huge basic inverted teal download button">注册登录</a>
 						<a href="#/" class="ui huge basic inverted teal download button">返回登录</a>
 						
 					</div>

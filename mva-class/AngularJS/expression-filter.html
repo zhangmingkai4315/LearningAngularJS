@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular MVA Class</title>
+
+</head>
+<body ng-app="App">
+
+<div class="" ng-controller="mainController">
+<!-- 一次性绑定 -->
+{{::title}}	
+<input type="text" ng-model="name">
+
+<li ng-repeat="user in users|searchName:name">
+	<ul>Name:{{user.name}}</ul>
+	<ul>Date:{{user.data}}</ul>
+	<ul>Link:<a href="{{user.url}}">{{user.url}}</a></ul>
+</li>
+
+
+</div>
+
+
+
+
+<footer>
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+
+	<script type="text/javascript">
+	
+	var users=[{
+		name:"mingkai",
+		data:new Date("Jul 8, 2005"),
+		url:'www.mingkai.com'
+	},{
+		name:'Kaise',
+		data:new Date("Jul 4, 2003"),
+		url:'www.Kaise.com'
+	},{
+		name:'Lulu',
+		data:new Date("Jul 8, 2025"),
+		url:'www.lulu.com'
+	}];
+	
+	var app=angular.module('App', []);
+	app.filter('searchName',function(){
+		return function(items,search){
+			var filtered=[];
+			if(!search) return items;
+
+			angular.forEach(items, function(item){
+				
+				if((angular.lowercase(item.name).indexOf(angular.lowercase(search))!=-1))
+				{   
+
+					filtered.push(item);
+				}
+			});
+			return filtered;
+		}
+	});
+	app.controller('mainController',function($scope){
+		$scope.name="";
+		$scope.title="Hello world";
+		$scope.users=users;
+	});	
+
+
+
+
+	</script>
+</footer>
+</body>
+</html>

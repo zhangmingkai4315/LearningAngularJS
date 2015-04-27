@@ -1,5 +1,6 @@
 var LocalStrategy   = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
+
 //temporary data store
 var mogoose=require('mongoose');
 var User=require('../model/Users');
@@ -23,7 +24,7 @@ module.exports = function(passport){
 				return done(err,false);
 			}
 			if(!user){
-				return done("user not found",false);
+				return done("用户名未找到",false);
 			}
 			return done(null,user);
 		});
@@ -40,10 +41,10 @@ module.exports = function(passport){
 					return done("Error",false);
 				}
 				if(!user){
-					return done("Username not found",false);
+					return done("用户名未找到",false);
 				}
 				if(!isValidPassword(user,password)){
-					return done('Incorrect password',false);
+					return done('密码无效，请重试',false);
 				}else{
 					
 					return done(null,user);
@@ -63,7 +64,7 @@ module.exports = function(passport){
 					return done('Db error'+err,false);
 				}
 				if(doc){
-					return done('Username already taken',false);
+					return done('用户名已被占用',false);
 				}else{	var user=new User({
 							username:username,
 							password:createHash(password),
@@ -75,7 +76,7 @@ module.exports = function(passport){
 								return done(err,false);
 
 							}
-							console.log('sucessfully sign up');
+							console.log('注册成功');
 							return done(null,user);
 						});
 

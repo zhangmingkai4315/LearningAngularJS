@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular MVA Class</title>
+
+</head>
+<body ng-app="App">
+
+<div class="" ng-controller="mainController">
+<label>{{Name}}</label>
+<input type="text" ng-model="Name">
+</div>
+
+
+
+<footer>
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+
+	<script type="text/javascript">
+
+	// angular.module('MyApp',[...])和angular.module('MyApp')
+	// 第一种保证只出现一次，如果出现多次则报错，第二种则返回第一次调用的结果
+
+	var app=angular.module('App', []).config([function(){
+		console.log("Configing");
+	}]).run([function(){
+		console.log("Runing");
+	}]);
+
+   // config 一些Provide可在此进行修改并实例化
+
+   // Run代码块用来启动你的应用，并且在注射器创建完成之后开始执行。为了避免在这一点开始之后再对系统进行配置操作，只有实例和常量可以被注入到Run代码块中。你会发现，在AngularJS中，Run代码块是与main方法最类似的东西
+
+
+	app.controller('mainController', function($log,$scope){
+		$log.info("Hello world");
+		$scope.Name="input what you want";
+	});
+
+
+
+
+	</script>
+</footer>
+</body>
+</html>

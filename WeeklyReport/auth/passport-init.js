@@ -4,8 +4,6 @@ var bCrypt = require('bcrypt-nodejs');
 var mogoose=require('mongoose');
 var User=require('../model/Users');
 
-
-
 module.exports = function(passport){
 
 	// Passport needs to be able to serialize and deserialize users to support persistent login sessions

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular MVA Class-Controllers</title>
+	<style type="text/css">
+	.ACTIVE{
+		color: green;
+	}
+	.DEACTIVE{
+		color: red;
+	}
+
+	</style>
+</head>
+<body ng-app="App">
+<div class="mainDiv" ng-controller="mainController">
+
+ <!-- 此title属于mainController中$scope -->
+{{title}}
+
+
+<div class="subDiv" ng-controller="EventCtrl">
+	<h1 ng-model="title">{{title}}</h1>
+	<!-- 此title属于EventCtrl中的 不能被父区域的覆盖 -->
+	<ul>
+	<li ng-repeat="item in menu">
+		<label ng-click="setIndex()">{{item.name}}</label>
+		<a  ng-class="(index==0)?'ACTIVE':'DEACTIVE'" href="{{item.href}}">{{item.name}}</a>
+	</li>
+	</ul>
+</div>
+
+
+<div class="" ng-click="changeGlobel()" ng-controller="EventItemCtrl">
+{{title}}
+</div>
+
+
+<footer>
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+
+	<script type="text/javascript">
+
+	var app=angular.module('App', ['eventModule']).config(function(){
+		console.log("App is configing");
+	}).run(function(){
+		console.log("App is running");
+	});
+	app.controller('mainController',function($scope){
+	  $scope.title="HELLO WORLD";
+
+	});
+
+
+
+
+	</script>
+	<script type="text/javascript">
+	//定义自己的module并在主module中注入 
+	var eventModule=angular.module('eventModule', []).config([function() {
+		console.log('Event Module configing');
+	}]).run([function(){
+		console.log("Event Module running");
+	}]);
+
+	eventModule.factory('MainTitle',function(){
+		return {
+			title:"Game Maker"
+		};
+	});
+
+	eventModule.controller('EventCtrl',['$scope','MainTitle',function($scope,mainTitle){
+		$scope.title=mainTitle.title;
+		
+		$scope.menu=[
+			{
+				name:'Event',href:'index.html'
+			},{
+				name:'Contact',href:'contact.html'
+			}
+		];
+	$scope.index=0;
+	$scope.getIndex=function(){
+		return $scope.index;
+	}
+	$scope.setIndex=function(){
+
+		$scope.index=($scope.index?0:1);
+	}
+	}]);
+
+	eventModule.controller('EventItemCtrl',['$scope','MainTitle',function($scope,mainTitle){
+
+			$scope.title=mainTitle.title;
+
+			$scope.changeGlobel=function(){
+				alert(mainTitle.title);
+				mainTitle.title="Already change";
+			}
+
+	}]);
+
+
+// 基于事件的方式中我们可以里面作用的$on,$emit,$boardcast这几个方式来实现，其中$on表示事件监听，$emit表示向父级以上的
+	
+
+
+
+	</script>
+</footer>
+</body>
+</html>

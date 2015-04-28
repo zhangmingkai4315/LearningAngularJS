@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.css" rel="stylesheet">
+    <title>ChangeButton</title>
+</head>
+<body ng-app="MyApp">
+<div class="container">
+    <div class="row">
+        <hr>
+    </div>
+    <div class="row">
+    <button type="submit" size="large">Submit</button>
+
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script>
+    var app=angular.module('MyApp',[]);
+    app.controller('MainController',function($scope){
+
+    });
+    app.directive('button',function(){
+        return{
+            restrict:'E',
+            compile:function(element,attributes){
+                element.addClass('btn');
+                if(attributes.type==='submit'){
+                    element.addClass('btn-primary');
+                }
+                if(attributes.size){
+                    element.addClass('btn-'+attributes.size);
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

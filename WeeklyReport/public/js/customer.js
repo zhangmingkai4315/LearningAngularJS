@@ -59,6 +59,39 @@ app.controller('mainController', function($scope){
 });
 
 
+app.directive('uniqueEmail',function($http){
+	return {
+		require:'ngModel',
+		link:function(scope,elem,attrs,ngModelCtrl){
+			var original;
+			var user={username:"",password:""};
+			ngModelCtrl.$parsers.push(function(viewValue){
+				if(viewValue&&viewValue!==original){
+					user.username=viewValue;
+					user.password="random123";
+					$http.post('/auth/query',user).success(function(data){
+						
+						if(data.state=="Failuer"){
+							
+								elem.removeClass('fineToRegist');
+								elem.addClass('warningRegist');
+						
+
+						}else{
+								
+									elem.removeClass('warningRegist');
+									elem.addClass('fineToRegist');
+								
+						}
+					}).error(function(data){
+						console.log("No feedback");
+					});
+				}
+			})
+		}
+	}
+});
+
 
 
 
@@ -69,21 +102,22 @@ app.controller('registerController', function($location,$scope,$http,$rootScope,
 	$scope.showWarning=1;
 	$scope.register=function(){
 		if($scope.user.password!=$scope.repassword){
-			$scope.error_message="两次输入密码不一致";
-			return ;
-		}
-		$http.post('/auth/signup',$scope.user).success(function(data){
-			if(data.user){
-			$rootScope.authenticate=true;
-			$rootScope.user=data.user.username;
-			$location.path('/profile');
-			}
-			
-
-		}).error(function(data){
 			$scope.showWarning=0;
-			$scope.error_message=data;
-		});
+			$scope.error_message="两次输入密码不一致";
+		}else{
+			$http.post('/auth/signup',$scope.user).success(function(data){
+				if(data.user){
+				$rootScope.authenticate=true;
+				$rootScope.user=data.user.username;
+				$location.path('/profile');
+				}
+				
+
+			}).error(function(data){
+				$scope.showWarning=0;
+				$scope.error_message=data;
+			});
+		}
 	}
 	
 });

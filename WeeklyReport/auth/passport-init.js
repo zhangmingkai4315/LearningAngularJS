@@ -54,6 +54,11 @@ module.exports = function(passport){
 		}
 	));
 
+
+
+
+
+
 	passport.use('signup', new LocalStrategy({
 			passReqToCallback : true // allows us to pass back the entire request to the callback
 		},

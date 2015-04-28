@@ -36,7 +36,7 @@
 						<div class="wide column ">
 							<div class="required field">
 								 <div class="ui icon input">
-							     	<input type="text" placeholder="用户名" ng-model="user.username">
+							     	<input type="text" placeholder="用户名" ng-model="user.username" unique-email>
 							     	<i class="user icon"></i>
 							     </div>
 							</div>
@@ -54,7 +54,7 @@
 							</div>
 							<div class="required field">
 							     <div class="ui icon input">
-							        <input type="password" placeholder="确认密码" ng-model="repassword">
+							        <input type="password" placeholder="确认密码" ng-model="repassword" validate-equals="user.password">
 							        <i class="lock icon"></i>
 							     </div>
 							</div>

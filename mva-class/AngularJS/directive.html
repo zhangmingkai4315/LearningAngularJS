@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular MVA Class</title>
+
+</head>
+<body ng-app="App">
+
+<div class="" ng-controller="mainController">
+<div ng-include src="'temple/header.html'"></div>
+</div>
+
+
+<div ng-controller="EventTabCtrl as eventtab" class="col-md-4">
+	<h3>{{eventtab.events[event.index].title}}</h3>
+	<p>{{event.events[event.index].description}}</p>
+	<h3>Details</h3>
+	<ul class="nav nav-tabs">
+		<li ng-click="eventtab.setTab(0)" class="active"><a href="">Main information</li>
+		<li ng-click="eventtab.setTab(1)"><a href="">Tickets</a></li>
+		<li ng-click="eventtab.setTab(2)"><a href="">Location</a></li>
+	</ul>
+	<div ng-show="(eventtab.tab==0)">Schedule</div>
+	<div ng-show="(eventtab.tab==1)">Ticket</div>
+	<div ng-show="(eventtab.tab==2)">Location</div>
+	<event-item></event-item>
+</div>
+
+
+
+
+<footer>
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+
+	<script type="text/javascript">
+	var app=angular.module('App', []);
+	app.controller('mainController', function($scope){
+		 
+	});
+	app.controller('EventTabCtrl',function(){
+		this.tab=0;
+		this.setTab=function(number){
+			this.tab=number;
+		};
+	});
+
+	app.directive('eventItem',function(){
+		return {
+			restrict:'E',
+			templateUrl:'temple/eventItem.html',
+			controller:function($scope){
+				var users=[{
+					name:"mingkai",
+					data:new Date("Jul 8, 2005"),
+					url:'www.mingkai.com'
+				},{
+					name:'Kaise',
+					data:new Date("Jul 4, 2003"),
+					url:'www.Kaise.com'
+				},{
+					name:'Lulu',
+					data:new Date("Jul 8, 2025"),
+					url:'www.lulu.com'
+				}];
+				$scope.name="";
+				$scope.title="Hello world";
+				$scope.users=users;
+				console.log("do Staff");
+
+			},
+			link:function($scope,element,attrs){}
+		}
+	});
+
+	</script>
+</footer>
+</body>
+</html>

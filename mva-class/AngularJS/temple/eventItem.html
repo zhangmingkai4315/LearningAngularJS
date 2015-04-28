@@ -1,0 +1,7 @@
+<input type="text" ng-model="name">
+
+<li ng-repeat="user in users|filter:name">
+    <ul>Name:{{user.name}}</ul>
+    <ul>Date:{{user.data}}</ul>
+    <ul>Link:<a href="{{user.url}}">{{user.url}}</a></ul>
+</li>

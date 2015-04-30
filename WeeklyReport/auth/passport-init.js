@@ -32,7 +32,7 @@ module.exports = function(passport){
 
 	});
 
-	passport.use('login', new LocalStrategy({
+passport.use('login', new LocalStrategy({
 			passReqToCallback : true
 		},
 		function(req, username, password, done) { 
@@ -59,7 +59,7 @@ module.exports = function(passport){
 
 
 
-	passport.use('signup', new LocalStrategy({
+passport.use('signup', new LocalStrategy({
 			passReqToCallback : true // allows us to pass back the entire request to the callback
 		},
 		function(req, username, password, done) {

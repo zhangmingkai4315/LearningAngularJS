@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+	<title>Route</title>
+	<base href="http://localhost:63342/LearningAngularJS/mva-class/AngularJS/route.html">
+</head>
+<body>
+
+
+<div class="mainDiv" ng-view></div>
+
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+	<script type="text/javascript"> 
+		var app=angular.module('MyApp', ['ngRoute']);
+		app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider){
+			$routeProvider.when('/contact',{
+				templateUrl:'temple/contact.html',
+				controller:'ContactCtrl'
+			}).when('/',{
+				templateUrl:'temple/home.html',
+				controller:'HomeCtrl'
+			}).otherwise({redirectTo:'/'});
+
+			$locationProvider.html5Mode({enabled:true});
+
+		}]);
+
+		app.controller('HomeCtrl',function($scope){
+			$scope.logo="My name is mingkai welcome to home page";
+		});
+
+		app.controller('ContactCtrl',function($scope){
+			$scope.logo="My name is mingkai welcome to contact page";
+		});
+
+	</script>
+</body>
+</html>

@@ -63,7 +63,7 @@ module.exports = function(passport){
 			passReqToCallback : true // allows us to pass back the entire request to the callback
 		},
 		function(req, username, password, done) {
-
+			console.log(req.body);
 			User.findOne({'username':username},function(err,doc){
 				if(err){
 					return done('Db error'+err,false);

@@ -24,6 +24,7 @@ semantic_home.ready = function() {
       setTimeout(function() {
         $library.transition('scale in', 1000);
       }, 0);
+
     }
 };
   handler.introduction();
@@ -32,3 +33,11 @@ semantic_home.ready = function() {
 // attach ready event
 $(document).ready(semantic_home.ready)
 ;
+
+
+
+
+
+
+
+

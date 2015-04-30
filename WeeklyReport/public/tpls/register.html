@@ -1,13 +1,4 @@
-<script type="text/javascript-lazy">
-    $(function(){
-        $("#source").typed({
-            strings: ["欢迎注册使周报管理系统"],
-            typeSpeed: 100
-        });
-    	semantic_home.ready();
-    });
-    
-</script>
+
 
 <div class="pusher">
 	    <div class="full height">
@@ -19,7 +10,7 @@
 							    <span class="library transition visible">
 							        ReportSystem
 							    </span>
-							    <span id="source"></span>
+							    <span id="source_regist"></span>
 							    </span><div class="ui divider"></div><small></small><span>系统监控组</span></small>
 							</h1>
 							<br>	
@@ -70,3 +61,20 @@
 			</div>
 		</div>
 </div>
+
+
+
+<script type="text/javascript-lazy">
+    $(document).ready(function(){
+    	semantic_home.ready();
+	    //使用不同的标示符来使用
+    	$("#source_regist").typed({
+            strings: ["欢迎注册使用"],
+            typeSpeed: 100
+        });
+
+    });
+        
+    
+    
+</script>

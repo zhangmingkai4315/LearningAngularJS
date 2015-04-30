@@ -1,5 +1,5 @@
 
-var app=angular.module('MyApp', ["ngRoute","ngAnimate"]).run(function($rootScope,$http){
+var app=angular.module('MyApp', ["ngRoute","ngAnimate","LocalStorageModule"]).run(function($rootScope,$http){
 	
 
 	$rootScope.logout=function(){
@@ -40,6 +40,13 @@ app.config(function($routeProvider) {
 		;
 });
 
+app.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+    .setPrefix('MyApp')
+    .setStorageType('sessionStorage')
+    .setNotify(true, true)
+});
+
 
 app.factory('reportService', ['$http', function($http){
 	var reportService={};
@@ -54,33 +61,68 @@ app.factory('reportService', ['$http', function($http){
 
 
 
-app.controller('mainController', function($scope){
+app.controller('mainController', function($rootScope,$location,$http,$scope,localStorageService){
+	$scope.username=localStorageService.get('username');
+	$('.ui.checkbox').checkbox();
+	if($scope.username){
+		// 获取主页数据
+	}
+	else{
+		$location.path("/");
+	}
+	$scope.profile={
+		"username":$scope.username,
+		"photos":"steve.jpg",
+		"group":"",
+		"slogen":""
+	};
+
+	$scope.logout=function(){
+		localStorageService.set('username','');
+		$http.get('/auth/logout');
+		$location.path("/");
+	};
+	$scope.showEditProfile=function(){
+		$('.ui.modal').modal('show');
+	};
+
+	$scope.submitProfile=function(){
+		console.log($scope.profile);
+		$http.put('/api/user/profile');
+	}
+
+
+
+
 	
 });
 
 
-app.directive('uniqueEmail',function($http){
+app.directive('uniqueEmail',function($http,$rootScope){
 	return {
 		require:'ngModel',
+		scope:true,
 		link:function(scope,elem,attrs,ngModelCtrl){
 			var original;
-			var user={username:"",password:""};
+			var user_query={username:"",password:""};
 			ngModelCtrl.$parsers.push(function(viewValue){
 				if(viewValue&&viewValue!==original){
-					user.username=viewValue;
-					user.password="random123";
-					$http.post('/auth/query',user).success(function(data){
+					user_query.username=viewValue;
+					user_query.password="random123";
+					//console.log(ngModelCtrl);
+					$http.post('/auth/query',user_query).success(function(data){
 						
 						if(data.state=="Failuer"){
-							
+								
 								elem.removeClass('fineToRegist');
 								elem.addClass('warningRegist');
-						
+								
 
 						}else{
-								
+									$rootScope.currentUser=user_query.username;
 									elem.removeClass('warningRegist');
 									elem.addClass('fineToRegist');
+									
 								
 						}
 					}).error(function(data){
@@ -95,7 +137,8 @@ app.directive('uniqueEmail',function($http){
 
 
 
-app.controller('registerController', function($location,$scope,$http,$rootScope,$log){
+app.controller('registerController', function($location,$scope,$http,$rootScope,$log,localStorageService){
+	
 	$scope.viweClass="registerClass";
 	$scope.user={username:"",password:""};
 	$scope.error_message="";
@@ -105,15 +148,21 @@ app.controller('registerController', function($location,$scope,$http,$rootScope,
 			$scope.showWarning=0;
 			$scope.error_message="两次输入密码不一致";
 		}else{
+			$scope.user.username=$rootScope.currentUser;
+
+			console.log($scope.user);
+			
 			$http.post('/auth/signup',$scope.user).success(function(data){
 				if(data.user){
 				$rootScope.authenticate=true;
 				$rootScope.user=data.user.username;
+				localStorageService.set('username',data.user.username);
 				$location.path('/profile');
 				}
 				
 
 			}).error(function(data){
+				$rootScope.authenticate=false;
 				$scope.showWarning=0;
 				$scope.error_message=data;
 			});
@@ -144,7 +193,12 @@ app.controller('showUsersController', function($scope,reportService,$log){
 
 
 
-app.controller('indexController', function($scope,$rootScope,$http,$location){
+app.controller('indexController', function($scope,$rootScope,$http,$location,localStorageService){
+	if(localStorageService.get('username'))
+	{
+		$location.path('/profile');
+	}
+
 	$scope.viweClass="indexClass";
 	$scope.user={username:"",password:""};
 	$scope.error_message="";
@@ -154,8 +208,10 @@ app.controller('indexController', function($scope,$rootScope,$http,$location){
 			if(data.user){
 			$rootScope.authenticate=true;
 			$rootScope.user=data.user.username;
+			localStorageService.set('username',data.user.username);
 			$location.path('/profile');
 			}else{
+				$rootScope.authenticate=true;
 				$scope.error_message=data;
 				alert(data);
 			}
@@ -178,8 +234,11 @@ app.directive('script', function() {
       link: function(scope, elem, attr) {
         if (attr.type === 'text/javascript-lazy') {
           var code = elem.text();
-          var f = new Function(code);
-          f();
+  		  console.log(code);
+  		  var f=new Function(code);
+  		  f();
+  		  //console.log(f);
+          
         }
       }
     };

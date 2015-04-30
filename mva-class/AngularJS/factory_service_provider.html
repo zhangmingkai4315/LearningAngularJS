@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script>
+        var app=angular.module('MyApp', []);
+
+		//使用最简单的请求
+//        app.controller('EventCtrl', ['$http', function($http){
+//        	this.getData=function(){
+//        		var scope=this;
+//        		$http.get('data/events.json').success(function(data){
+//        			scope.eventsData=data;
+//        		});
+//        	};
+//			this.getData();
+//        }]);
+
+
+		app.factory('Events',['$http', function ($http) {
+			return {
+				getDate:function(callback){
+					$http.get('data/events.json').success(function (data) {
+						callback(data);
+					});
+				}
+			};
+		}]);
+
+		app.controller('EventCtrl',['Events',function(Events){
+
+			this.getData=function() {
+				var scope=this;
+				Events.getDate(function (data) {
+					scope.eventsData = data
+				});
+			};
+			this.getData();
+		}]);
+
+    </script>
+
+    <title></title>
+</head>
+<body>
+<div ng-controller="EventCtrl as event">
+	<ur>
+		<li ng-repeat="item in event.eventsData">
+			<span>{{item.name}}</span>
+			<span>{{item.url}}</span>
+			<hr>
+		</li>
+	</ur>
+
+</div>
+
+</body>
+</html>

@@ -1,1 +1,298 @@
-<h1>User profile</h1>
+<div class="ui centered grid">
+  <div class="nav fourteen wide column">
+    <div class="ui  teal inverted  large menu">
+        <h2> 
+        <a class=" item">
+         <i class="big home icon"></i>主页
+        </a>
+        <a class=" item">
+          <i class="mail big icon"></i> 消息栏
+        </a>
+        <a class="item">
+          <i class="user big icon"></i> 好友
+        </a>
+        <a class="item">
+          <i class="coffee big icon"></i> 聊天室
+        </a>
+        <div class="right menu">
+          <div class="item">
+            <div class="ui transparent icon input">
+              <input type="text" placeholder="Search...">
+              <i class="search link big icon"></i>
+            </div>
+          </div>
+          <a ng-click="logout()" class="item">
+            <i class="power big icon"></i>登出
+          </a>
+          </h2>
+        </div>
+    </div>
+  <div class="body fourteen wide column">
+    <div class="ui four column grid">    
+        <div class="column">      
+          <div class="ui card">
+              <div class="image">
+                <img src="./image/photos/steve.jpg">
+              </div>
+              <div class="content">
+                <a class="header">Stevie</a>
+                <div class="meta">
+                  <span class="date">系统监控组</span>
+                </div>
+                <div class="description">
+                 Stevie是一个充满活力的同事，平时喜欢跑步，读书和弹吉他。
+                </div>
+              </div>
+              <div class="extra content">
+                <a ng-click="showEditProfile()">
+                  
+                  <i class="fa fa-pencil-square-o"></i>
+                  编辑资料
+                </a>
+              </div>
+          </div>
+        </div>    
+        <div class="column">
+                <div class="ThisWeek">
+                  <h2 class="ui dividing header">本周工作内容</h2>
+                  <div class="ui big ordered animated list">
+                    <div class="item">
+                      
+                      <div class="content">
+                          <div class="header">值班</div>
+                          <div class="ui teal progress progressExample" data-value="100" data-total="100" id="example1">
+                        <div class="bar"></div>
+                        <div class="label">100% 已完成</div>
+                      </div>
+                      </div>
+                  
+                    </div>
+                    <div class="item">
+                      
+                      <div class="content">
+                        <div class="header">开发日志管理系统</div>
+                          <div class="ui teal progress progressExample" data-value="50" data-total="100" id="example2">
+                        <div class="bar"></div>
+                        <div class="label">50% 已完成</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      
+                      <div class="content">
+                        <div class="header">学习Mean框架</div>
+                          <div class="ui teal progress progressExample" data-value="74" data-total="100" id="example3">
+                        <div class="bar"></div>
+                        <div class="label">74% 已完成</div>
+                      </div>
+                      </div>
+                       </div>
+                  </div>
+                </div>
+        </div>
+        <div class="column">
+            <div class="NextWeek">
+              <h2 class="ui dividing header">下周计划内容</h2>
+              <div class="ui big ordered animated list">
+                <div class="item">
+                  
+                  <div class="content">
+                      <div class="header">值班</div>
+                      <div class="ui teal progress progressExample" data-value="100" data-total="100" id="example4">
+                    <div class="bar"></div>
+                    <div class="label">计划完成 100%</div>
+                  </div>
+                  </div>
+              
+                </div>
+
+                <div class="item">
+                  
+                  <div class="content">
+                    <div class="header">开发日志管理系统</div>
+                      <div class="ui teal progress progressExample" data-value="70" data-total="100" id="example5">
+                    <div class="bar"></div>
+                    <div class="label">70% 计划完成</div>
+                  </div>
+                  </div>
+                </div>
+                <div class="item">
+                  
+                  <div class="content">
+                    <div class="header">学习Mean框架</div>
+                      <div class="ui teal progress progressExample" data-value="94" data-total="100">
+                    <div class="bar"></div>
+                    <div class="label">94% 计划完成</div>
+                  </div>
+                  </div>
+                   </div>
+
+                   <div class="item">
+                  
+                  <div class="content">
+                    <div class="header">出差杭州</div>
+                      <div class="ui teal progress progressExample" data-value="100" data-total="100">
+                    <div class="bar"></div>
+                    <div class="label">100% 计划完成</div>
+                  </div>
+                  </div>
+                   </div>
+
+
+            </div>
+        </div>
+        </div>
+        <div class="column">
+            <div class="Lastest Information">
+             <div class="ui feed">
+              <h2 class="ui dividing header">最新消息</h2>
+                    <div class="event">
+                      <div class="label">
+                        <img src="/images/avatar/small/helen.jpg">
+                      </div>
+                      <div class="content">
+                        <div class="date">
+                          1天前
+                        </div>
+                        <div class="summary">
+                           <a>Helen Troy</a> 上传了两张图片
+                        </div>
+                        <div class="extra images">
+                          <a><img src="/images/wireframe/image.png"></a>
+                          <a><img src="/images/wireframe/image.png"></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="event">
+                      <div class="label">
+                        <img src="/images/avatar/small/laura.jpg">
+                      </div>
+                      <div class="content">
+                        <div class="date">
+                          2天前
+                        </div>
+                        <div class="summary">
+                           <a>Laura Faucet</a> 发表了评论
+                        </div>
+                        <div class="extra text">
+                          你的项目进度好慢！
+                        </div>
+                      </div>
+                    </div>
+             </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="project fourteen wide column">
+
+  </div>
+
+  <div class="artical fourteen wide column">
+ 
+    <div class="ui segment"> 
+      <h1 class="ui header">
+      <img src="./image/photos/steve.jpg" class="ui circular image">
+      <div class="content">
+          我的工作笔记
+      </div>
+      </h1>
+      <h2 class="ui header">工作总结一</h2>
+      <div class="ui clearing divider"></div>
+      <p>这是发表的文章一</p>
+      <div class="extra">
+        <i class="paint brush icon"></i>
+        发表于: 2015年03月10日 22:30:40
+      </div>
+
+      <div class="ui hidden divider"></div>
+
+      <h2 class="ui header">工作总结二</h2>
+      <div class="ui clearing divider"></div>
+      <p>这是发表的文章二</p>
+       <div class="extra">
+        <i class="paint brush icon"></i>
+        发表于: 2015年03月10日 22:30:40
+        
+
+       </div>
+
+       <div class="ui hidden divider"></div>
+
+      <h2 class="ui header">工作总结三</h2>
+      <div class="ui clearing divider"></div>
+      <p>这是发表的文章三</p>
+      <div class="extra">
+        <i class="paint brush icon"></i>
+        发表于: 2015年03月10日 22:30:40
+      </div>
+
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+
+<script type="text/javascript-lazy">
+    $('.progressExample').progress();
+</script>
+
+
+<!-- UI model  -->
+
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    编辑资料
+  </div>
+  <div class="content">
+    <div class="ui medium image">
+      <img ng-src="/image/photos/{{profile.photos}}">
+    </div>
+    <div class="description">
+    <h2 class="ui dividing header">完善信息</h2>
+      <div class="ui header">我们为您挑选了一张最适合您的照片</div>
+      <p>照片来自于<a href="https://www.gravatar.com" target="_blank">gravatar</a>网站，选择后将和您的账号绑定</p>
+     
+      <form class="ui form">
+          
+          <div class="two fields">
+            <div class="field">
+              <div class="grouped fields">
+                 <label for="alone">选择您的工作组?</label>
+                 <select class="ui search dropdown" ng-model="profile.group">
+                   <option value="se" ng-selected="profile.sex=='se'">系统监控组</option>
+                    <option value="devops" ng-selected="profile.sex=='devops'">运维开发组</option>
+                 </select>
+              </div>
+            </div>
+            <div class="field">
+             <label>我的标语</label>
+             <textarea ng-model="profile.slogen"></textarea>
+            </div>
+          </div>
+      </form> 
+
+
+
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui black button">
+      取消
+    </div>
+    <div class="ui positive right labeled icon button" ng-click="submitProfile()">
+      填写完成
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+
+
+

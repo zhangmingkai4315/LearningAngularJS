@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+//        在模块中定义控制器函数
+        app.controller("MyController", function ($scope) {
+            $scope.counter=0;
+            $scope.add=function(number){
+                $scope.counter=$scope.counter+number;
+            };
+            $scope.subtract=function(number){
+                $scope.counter=$scope.counter-number;
+            };
+        });
+    </script>
+</head>
+<body>
+<div class="container" ng-controller="MyController">
+    <button ng-click="add(1)" class="bttton">Add</button>
+    <a ng-click="subtract(1)" class="button alert">Subtract</a>
+    <h3>Current counting:{{counter}}</h3>
+</div>
+</body>
+</html>

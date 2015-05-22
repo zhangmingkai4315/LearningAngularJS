@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",['emailParse'])
+
+        app.controller("MyController", function ($scope,EmailParser) {
+                $scope.name="Hello"
+                $scope.$watch("emailBody",function(body){
+                    if(body){
+                        $scope.previewText=EmailParser.parse(body,{to:$scope.to});
+                    }
+                });
+        });
+
+        var emailParseModule=angular.module("emailParse",[]).config(['$interpolateProvider',function($interpolateProvider){
+            $interpolateProvider.startSymbol('__');
+            $interpolateProvider.endSymbol('__');
+        }]);
+        emailParseModule.factory('EmailParser',['$interpolate',function($interpolate){
+            return {
+                parse: function (text,context) {
+                    var template=$interpolate(text);
+                    return template(context);
+                }
+            }
+        }]);
+    </script>
+</head>
+<body>
+<div class="container" ng-controller="MyController">
+__name__
+<input ng-model="to" type="email" placeholder="Recipient">
+<textarea ng-model="emailBody"></textarea><pre>__previewText__</pre>
+</div>
+</body>
+</html>

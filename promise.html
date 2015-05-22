@@ -62,7 +62,7 @@
        var controllerTest_2=app.controller('controllerTest_2',['Restaurant','$log',function(Restaurant,$log){
            var pawel=new Person('Marrt',$log);
            var KEVIC=new Person('kEVIC',$log);
-            var bananeDelive=Restaurant.takeOrder("Banane");
+           var bananeDelive=Restaurant.takeOrder("Banane");
            bananeDelive.then(pawel.eat,pawel.beHungry);
            bananeDelive.then(KEVIC.eat,KEVIC.beHungry);
              Restaurant.problemWithOrder("Wrone");

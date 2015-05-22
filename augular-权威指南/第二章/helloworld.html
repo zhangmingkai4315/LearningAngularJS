@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en" >
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+//        var app=angular.module('MyApp',[]);
+//        app.controller("firstController",function($scope,$timeout){
+//            $scope.name="world";
+//            $scope.timeClock = new Date();
+//            $timeout(function(){
+//                updateTime();
+//            },1000);
+//            function updateTime(){
+//                $scope.timeClock = new Date();
+//                $timeout(function(){
+//                    updateTime()
+//                },1000);
+//            }
+//
+//        });
+
+//        数据绑定的最佳实践是通过绑定对象的属性而不是对象本身更好一些：
+        var app=angular.module('MyApp',[]);
+        app.controller("firstController",function($timeout,$scope){
+            $scope.clock={
+                now:new Date()
+            };
+            (function updateClock(){
+                $scope.clock.now=new Date();
+                $timeout(function(){
+                    updateClock();
+                },1000);
+            })();
+        });
+    </script>
+</head>
+<body>
+<div class="container" ng-controller="firstController">
+<input ng-model="name" type="text">
+    <h1>{{name}}</h1>
+    <h2>{{clock.now}}</h2>
+</div>
+</body>
+</html>
+

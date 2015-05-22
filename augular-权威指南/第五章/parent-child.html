@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("ParentController", function ($scope) {
+           $scope.person={
+               greeted:false
+           } ;
+        });
+        app.controller("ChildController",function($scope){
+            $scope.sayHello=function(){
+                $scope.person.name="Ari";
+            };
+        });
+    </script>
+</head>
+<body>
+<div class="container" ng-controller="ParentController">
+<div class="row" ng-controller="ChildController">
+    {{person}}
+    <button ng-click="sayHello()">Add attribute</button>
+</div>
+</div>
+</body>
+</html>

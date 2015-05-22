@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <style>
+        input.ng-invalid{
+            border:1px solid red;
+        }
+        input.ng-valid{
+            boder:1px solid green;
+        }
+    </style>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope,$log) {
+            $scope.formObject={
+                email:"",
+                username:"",
+                url:""
+            },
+            $scope.submit=function(){
+                $log.info($scope.form.url)
+                if(form.inputFieldName)
+                    $log.info($scope.formObject);
+                else{
+                    $log.info("Error input")
+                }
+            }
+            $scope.signupForm= function () {
+                $scope.signup_form.submitted=false;
+                if($scope.signup_form.$valid){
+                    //提交
+                }else{
+                    $scope.signup_form.submitted=true;
+                }
+            }
+
+
+        });
+
+    </script>
+</head>
+<body>
+<div ng-controller="MyController"><div class="row">
+<form name="form" novalidate>
+    <label name="email">Your email</label>
+    <input type="email" ng-model="formObject.email" placeholder="Email address">
+    <label name="url">Your homepage</label>
+    <input type="url" name="url" ng-model="formObject.url" placeholder="URL">
+    <label name="username">Your name</label>
+    <input type="text" ng-model="formObject.username" placeholder="Username">
+    <button ng-click="submit()">Submit</button>
+</form>
+    <pre>{{formObject}}</pre>
+
+
+<form name="signup_form" novalidate ng-submit="signupForm()">
+    <fieldset>
+        <legend>SignUp</legend>
+            <div class="large-10 large-centered columns">
+                <label>Your name</label>
+                <input type="text" placeholder="Name" name="name" ng-model="signup.name" ng-minlength="3" ng-maxlength="20" required>
+                <div class="error" ng-show="signup_form.name.$dirty&&signup_form.name.$invalid&&signup_form.submitted">
+                    <small class="error" ng-show="signup_form.name.$error.required">
+                        Your name is required!
+                    </small>
+                    <small class="error" ng-show="signup_form.name.$error.minlength">
+                        Your name is too short!
+                    </small>
+                    <small class="error" ng-show="signup_form.name.$error.maxlength">
+                        Your name is too long!
+                    </small>
+                </div>
+            </div>
+
+<!--ng-disabled="signup_form.$invalid"可直接放置在button上来当用户输入错误后进行disable-->
+        <button type="submit"  class="button radius">Submit</button>
+    </fieldset>
+</form>
+</div>
+</div>
+</body>
+</html>

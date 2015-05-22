@@ -27,16 +27,10 @@ app.use(session({
 }));
 
 app.use(flash());
-
-
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 var initPassword=require("./auth/passport-init");
 initPassword(passport);
-
-
 app.use('/static', express.static(__dirname + '/bower_components'));
 app.use(express.static(__dirname + '/public'));
 //定义api的路由处理函数
@@ -45,10 +39,6 @@ app.use('/auth',authenticate);
 app.get('/', function(req, res){
   res.sendFile(__dirname+'/public/index.html');
 });
-
-
-
-
 
 var server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);

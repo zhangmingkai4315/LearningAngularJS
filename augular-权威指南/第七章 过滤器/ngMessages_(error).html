@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="../../bower_components/angular-messages/angular-messages.js"></script>
+    <title></title>
+    <script>
+        //form-filter例子中针对每个输入都要进行大量的验证而且加入和额外的很多标记
+
+        var app=angular.module("MyApp",['ngMessages']);
+        app.controller("MyController", function ($scope) {
+
+        });
+        app.controller("subController",function($scope){
+
+        });
+
+        //此处有误，无法正常执行 待将来学习指令的时候再来处理！
+        app.directive('ensureUnique',function($http){
+            return {
+                require: 'ngModel',
+                link: function (scope, ele, attr, ctrl) {
+                    var url = attr.ensureUniqe;
+                    ctrl.$parsers.push(function (val) {
+                        if (!val || val.length === 0) {
+                            return;
+                        }
+
+
+                        ctrl.$setValidity('checkingAvailabilty', true);
+                        ctrl.$setValidity('usernameAvailabilty', false);
+
+                        $http({
+                            method: 'GET',
+                            url: url,
+                            params: {
+                                username: val
+                            }
+                        }).success(function () {
+                            ngModel.$setValidity('checkingAvailabilty', false);
+                            ngModel.$setValidity('usernameAvailabilty', true);
+                        })['catch'](function () {
+                            ngModel.$setValidity('checkingAvailabilty', false);
+                            ngModel.$setValidity('usernameAvailabilty', false);
+                        });
+                        return val;
+                    })
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+    <div class="large-10 large-centered">
+        <form name="signup_form" novalidate ng-submit="signupForm()">
+            <label>Your name</label>
+            <input type="text" placeholder="Name" name="name" ng-controller="subController" ng-model="signup.name" ng-minlength="3" ng-maxlength="20" required ensure-unique="/api/checkUsername.json">
+            <div class="error" ng-messages="signup_form.name.$error">
+                <div ng-message="required">Make sure you enter your name</div>
+                <div ng-message="maxlength">Too Long</div>
+                <div ng-message="minlength">Too Short</div>
+                <div ng-message="checkingAvailabilty">Checking....</div>
+                <div ng-message="usernameAvailabilty">The username has been taken!</div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

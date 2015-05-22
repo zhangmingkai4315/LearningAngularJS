@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",["MyApp.filter"]);
+
+        app.controller("MyController", function ($scope) {
+            $scope.string="my name is mike";
+        });
+
+        angular.module("MyApp.filter",[]).filter('capitalize',function(){
+            return function(input){
+                if(input){
+                    var tempString=input.split(' ');
+                    for( var i=0; i<tempString.length;i++)
+                        tempString[i]=tempString[i][0].toUpperCase()+tempString[i].slice(1);
+
+                    return tempString.toString(" ").replace(/,/g," ");
+                }
+            }
+        });
+
+
+
+    </script>
+</head>
+<body>
+<div class="container" ng-controller="MyController">
+ {{string|capitalize}}
+</div>
+</body>
+</html>

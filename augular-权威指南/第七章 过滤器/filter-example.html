@@ -9,14 +9,52 @@
     <title></title>
     <script>
         var app=angular.module("MyApp",[]);
-        app.controller("MyController", function () {
-
+        app.controller("MyController", function ($scope) {
+            $scope.price=123.1;
+            $scope.today=new Date();
+            $scope.String1="My name is Mike Zhang";
+            $scope.array1=["My","Name","is ","Mike"];
+            $scope.person={name:"mike",address:"Beijing"}
+            $scope.number1=123.3445
+            $scope.array2=[{
+                'name': 'Ari',
+                'status': 'awake'
+            },{
+                'name': 'Q',
+                'status': 'sleeping'
+            },{
+                'name': 'Nate',
+                'status': 'awake'
+            }];
         });
     </script>
 </head>
 <body>
 <div class="container" ng-controller="MyController">
+    {{price|currency}}<hr>
+    <!-- 以下内容为时间相关的格式化，angular提供了丰富的针对单个分钟 小时 时区和星期几的格式字符串内容 -->
+    {{ today | date:'medium' }}<hr>
+    {{ today | date:'short' }} <hr>
+    {{ today | date:'fullDate' }} <hr>
+    {{ today | date:'longDate' }} <hr>
+    {{ today | date:'mediumDate' }}<hr>
+    {{ today | date:'shortDate' }}<hr>
+    {{ today | date:'mediumTime' }} <hr>
+    {{ today | date:'shortTime' }}<hr>
+    {{ today | date:'a' }}
+    <hr>
+    {{String1|lowercase}}
+    <hr>
+    {{array1|limitTo:3}}
+    <hr>
+    {{person|json}}
+    <hr>
+    {{number1|number:2}}
 
-</div>
+    <hr>
+    {{array2|orderBy:'name':true}}
+    <!--不设置true则为正序，设置后反转序列-->
+
+
 </body>
 </html>

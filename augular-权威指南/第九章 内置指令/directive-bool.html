@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+
+    <script>
+        var app=angular.module("MyApp",[]).run(function($rootScope,$timeout){
+            $timeout(function() {
+                $rootScope.imgSrc = 'https://www.google.com/images/srpr/logo11w.png';
+            }, 2000);
+
+        });
+        app.controller("MyController", function ($scope,$timeout,$log) {
+            $scope.input={};
+            $timeout(function(){
+               $scope.imgSrc = '';
+                $scope.greeting="Hello"
+            },4000);
+            $scope.person={}
+        });
+        app.controller("PeopleController",function($scope){
+            $scope.people=[
+                {name:"Mike",age:'26',city:'beijing'},
+                {name:"Keit",age:'24',city:'beijing'},
+                {
+                    name:"lucy",age:'23',city:'shanghai'
+                }
+            ]
+        })
+    </script>
+    <style>
+        .odd {
+            background-color: blue;
+        } .even {
+              background-color: red;
+          }
+
+    </style>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+        <input type="text" ng-model="input.href" ng-keyup="myKeyUp($event)">
+        <a ng-href={{input.href}}>Go</a>
+        <pre>{{input}}</pre>
+        <h1>WrongWay</h1>
+        <img src="{{imgSrc}}">
+         <h1>RightWay</h1>
+        <img ng-src="{{imgSrc}}">
+
+        <input type="text" ng-model="person.name">
+        <div ng-switch on="person.name"><p ng-switch-default>And the winner is</p>
+        <h1 ng-switch-when="Ari">{{person.name}}</h1>
+        </div>
+
+        <div ng-if="2===4">
+            Wont see this div
+        </div>
+        <div ng-if="2===2">
+            See this div,right?
+        </div>
+
+        <ul ng-controller="PeopleController">
+            <li ng-repeat="person in people" ng-class="{even: !$even, odd: !$odd}">
+                {{person.name}} lives in {{person.city}}
+             </li>
+        </ul>
+
+        <div>
+            <p ng-cloak>{{greeting}}</p>
+        </div>
+    <div ng-show="2 + 2 == 5">
+        2 + 2 isn't 5, don't show
+    </div>
+    <div ng-show="2 + 2 == 4">
+        2 + 2 is 4, do show
+    </div>
+    <div ng-hide="2 + 2 == 5">
+        2 + 2 isn't 5, don't hide
+    </div>
+    <div ng-hide="2 + 2 == 4">
+        2 + 2 is 4, do hide
+    </div>
+
+
+
+
+</div>
+</body>
+</html>

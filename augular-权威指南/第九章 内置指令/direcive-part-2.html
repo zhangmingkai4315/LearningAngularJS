@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]).run(function($rootScope,$timeout){
+            $rootScope.randomDisable=true;
+            $timeout(function(){
+                $rootScope.randomDisable=false;
+                console.log("false");
+            },2000);
+        });
+        app.controller("MyController", function ($scope,$timeout,$log) {
+                $scope.input={}
+                    $scope.changeMe=function(){
+                    $scope.output=$scope.input.name+",how are u";
+                    }
+
+            }
+        );
+
+
+                app.controller('FormController',function($scope) {
+                    $scope.fields = [
+                        {placeholder: 'Username', isRequired: true}, {placeholder: 'Password', isRequired: true}, {placeholder: 'Email (optional)', isRequired: false}
+                    ];
+                    $scope.submitForm = function() {
+                        alert("it works!");
+                    }; });
+    </script>
+    <style>
+        input.ng-invalid {
+            border: 1px solid red;
+        }
+        input.ng-valid {
+            border: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+
+    <form name="signup_form"
+          ng-controller="FormController"
+          ng-submit="submitForm()" novalidate>
+        <div ng-repeat="field in fields"
+             ng-form="signup_form_input">
+            <input type="text"
+                   name="dynamic_input"
+                   ng-required="field.isRequired"
+                   ng-model="field.name"
+                   placeholder="{{field.placeholder}}" />
+            <div ng-show="signup_form_input.dynamic_input.$dirty &&
+            signup_form_input.dynamic_input.$invalid">
+            <span class="error"
+                  ng-show="signup_form_input.dynamic_input.$error.required"> The field is required.
+            </span>
+            </div>
+        </div>
+        <button type="submit"
+                ng-disabled="signup_form.$invalid">
+            Submit All
+        </button>
+    </form>
+
+    <div class="container" ng-controller="MyController">
+        <input ng-model="input.name" ng-change="changeMe()">
+        <p>My name is {{output}}</p>
+    </div>
+</div>
+</body>
+</html>

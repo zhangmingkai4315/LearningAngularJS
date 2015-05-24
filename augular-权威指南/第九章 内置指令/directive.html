@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]).run(function($rootScope,$timeout){
+            $rootScope.randomDisable=true;
+            $timeout(function(){
+                $rootScope.randomDisable=false;
+                console.log("false");
+            },2000);
+        });
+        app.controller("MyController", function ($scope,$timeout,$log) {
+            //刷新后随机显示按钮状态
+            //$scope.randomDisable=Math.round(Math.random());
+            $scope.input={};
+            $scope.sourceList=[
+                {id:'123','name':'annya'},
+                {
+                    id:'234',"name":'Jacle'
+                }
+            ]
+        });
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="container" ng-controller="MyController">
+    <button ng-disabled=randomDisable>Random</button>
+    <input type="text" ng-model="input.inputText"/>
+    <button ng-disabled=!input.inputText>INPUT FIRST</button>
+    <textarea ng-readonly=!input.inputText ng-model="input.textarea"></textarea>
+    <label>Check me</label></label><input ng-init="input.checked=true" ng-checked=!input.inputText type="checkbox" ng-model="input.checked"/>
+    <br>
+        <label>Select two fish!</label>
+        <select ng-model="input.selected" ng-options="item.name for item in sourceList">
+        </select>
+
+        <pre>{{input}}</pre>
+</div>
+</div>
+</body>
+</html>

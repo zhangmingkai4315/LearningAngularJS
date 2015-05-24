@@ -20,34 +20,51 @@
         });
 
         //此处有误，无法正常执行 待将来学习指令的时候再来处理！
-        app.directive('ensureUnique',function($http){
+        app.directive('ensureUnique',function($http,$timeout){
             return {
                 require: 'ngModel',
                 link: function (scope, ele, attr, ctrl) {
-                    var url = attr.ensureUniqe;
+                    console.log(ctrl);
+                    var url = attr.ensureUnique;
+                    console.log(url);
                     ctrl.$parsers.push(function (val) {
                         if (!val || val.length === 0) {
-                            return;
+                            return
                         }
+                        else {
+                            console.log(val);
+                            console.log(ctrl);
+                            ctrl.$setValidity('checkingAvailabilty', false);
+                            ctrl.$setValidity('usernameAvailabilty', true);
+                            $timeout(function(){
 
+                                //模仿远程验证过程等待一秒后执行修改
+                                ctrl.$setValidity('checkingAvailabilty', true);
+                                ctrl.$setValidity('usernameAvailabilty', false);
+                            },1000);
+                            return val;
+                        }
+//
+//
+//                        ctrl.$setValidity('checkingAvailabilty', true);
+//                        ctrl.$setValidity('usernameAvailabilty', false);
+//
+//                        $http({
+//                            method: 'GET',
+//                            url: url,
+//                            params: {
+//                                username: val
+//                            }
+//                        }).success(function () {
+//                            ngModel.$setValidity('checkingAvailabilty', false);
+//                            ngModel.$setValidity('usernameAvailabilty', true);
+//                        })['catch'](function () {
+//                            ngModel.$setValidity('checkingAvailabilty', false);
+//                            ngModel.$setValidity('usernameAvailabilty', false);
+//                        });
+////                        return val;
+//                    })
 
-                        ctrl.$setValidity('checkingAvailabilty', true);
-                        ctrl.$setValidity('usernameAvailabilty', false);
-
-                        $http({
-                            method: 'GET',
-                            url: url,
-                            params: {
-                                username: val
-                            }
-                        }).success(function () {
-                            ngModel.$setValidity('checkingAvailabilty', false);
-                            ngModel.$setValidity('usernameAvailabilty', true);
-                        })['catch'](function () {
-                            ngModel.$setValidity('checkingAvailabilty', false);
-                            ngModel.$setValidity('usernameAvailabilty', false);
-                        });
-                        return val;
                     })
                 }
             }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope) {
+        });
+
+        app.directive('myDirective',function(){
+            return{
+
+                restrict:'E',
+                replace:true,
+                scope:{
+                    myUrl:'@',//找对应的范围内的属性为my-url的值并赋值
+                    myLinkText:'@',//找对应的范围内的属性为my-link-text的值并赋值
+                    myName:'=someThing'
+                },
+                template:'<a href="{{myName}}">{{myLinkText}},My name is {{myName}}</a>'
+            }
+        });
+    //创建数据绑定流：input的数据双向绑定到someThing中，directive中将其绑定到some-thing上而some-thing和directive的myName绑定
+    </script>
+
+</head>
+<body>
+<div class="container" ng-controller="MyController">
+    <input type="text" ng-model="someThing">
+<my-directive my-Url="http://google.com" some-thing="someThing" my-link-text="Click me to go to Google">
+</my-directive>
+</div>
+</body>
+</html>

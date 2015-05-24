@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope) {
+
+        });
+
+        function createDirective(name){
+            return function(){
+                return {
+                    restrict: 'E',
+                    compile: function(tElem, tAttrs){
+                        console.log(name + ': compile');
+                        console.log(name + ': compile => ' + tElem.html());
+                        return {
+                            pre: function(scope, iElem, iAttrs){
+                                console.log(name + ': pre link');
+                                console.log(name + ': pre link => ' + iElem.html());
+                            },
+                            post: function(scope, iElem, iAttrs){
+                                console.log(name + ': post link');
+                                console.log(name + ': post link => ' + iElem.html());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        app.directive('levelOne', createDirective('levelOne'));
+        app.directive('levelTwo', createDirective('levelTwo'));
+        app.directive('levelThree', createDirective('levelThree'));
+
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+    <level-one>
+        <level-two>
+            <level-three>
+                Hello
+            </level-three>
+        </level-two>
+    </level-one>
+</div>
+</body>
+</html>

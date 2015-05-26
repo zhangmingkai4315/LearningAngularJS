@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope) {
+            $scope.inside="world"
+        });
+        app.directive('myDirective',function($timeout){
+            return{
+                restrict:'EA',
+                //<div my-directive></div 或者 <my-directive></my-directive>
+                priority: 1000,
+                //一般忽略，但是ngReapte则会设置为1000，可优先被处理
+//                terminal:true,
+                //如果当前元素中包含比本指令优先级低的则终止，比如ngIf高于ngView如果ngIf=false则不会执行ngView
+                template:'<div>Hello,{{inside}}</div>',
+//                templateUrl:'/template/1.html',
+//                最好使用url方式引入这样比较简练，模板可被提前缓存到$templateCache中
+//
+//                 replace:true,
+//              创建一个隔离的作用域不能访问外面的内容甚至是当前控制器的内容
+                scope:true
+                //内容得到继承
+            }
+        });
+
+        app.directive('mySecondDirective',function($timeout){
+            return{
+                restrict:'EA',
+                template:'<div>Hello,{{inside}}</div>',
+                priority:100,
+                scope:{}//指令里的{{}}无法访问父级的scope
+            }
+        });
+
+
+        app.directive('myThirdDirective',function($timeout){
+            return{
+                restrict:'EA',
+                template:'<div>Hello,{{inside}}</div>',
+
+                scope:{}//指令里的{{}}无法访问父级的scope
+            }
+        });
+        app.directive('sidebox', function () {
+            return{
+                restrict:'EA',
+                scope:{
+                    title:'@'
+                },
+                transclude:true,
+                template:'<div class="sidebox">\
+                <h2 class="header">{{title}}</h2> \
+                <span class="content" ng-transclude></span>\
+                </div>\
+                </div>'
+
+            }
+        })
+
+
+    </script>
+</head>
+<body>
+<div class="row">
+<div class="container" ng-controller="MyController">
+    <h1>{{inside}}</h1>
+<my-directive></my-directive>
+<my-second-directive></my-second-directive>
+<my-third-directive></my-third-directive>
+
+
+    <div sidebox title="Links">
+        <ul>
+            <li>First link</li>
+            <li>Second link</li>
+        </ul>
+    </div>
+
+    <div sidebox title="Hello">
+        <ul>
+            <li>third link</li>
+            <li>fourth link</li>
+        </ul>
+    </div>
+</div>
+</div>
+</body>
+</html>

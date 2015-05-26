@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]).config(function($provide,$compileProvider){
+            $provide.factory('myFactory',function(){
+                var service={};
+                return service;
+            });
+            $compileProvider.directive('myDirecive',function(){
+                return{
+
+                }
+            })
+
+        });
+
+            app.run(function($rootScope, AuthService) {
+                $rootScope.$on('$routeChangeStart', function(evt, next, current) {
+                    if (!AuthService.userLoggedIn()) {
+                        if (next.templateUrl === "login.html") {
+                        } else {
+                            $location.path('/login');
+                        }
+                    }
+                });
+        app.controller("MyController", function ($scope) {
+
+        });
+//        app.factory('myFactory',function(){
+//            var service={};
+//            return service;
+//        });
+//        app.directive('myDirective',function(){
+//            ...
+//        })
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+</div>
+</body>
+</html>

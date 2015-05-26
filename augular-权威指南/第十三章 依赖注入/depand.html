@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+
+        //在angular内部都是通过$inject注入到其中的
+        //var injector=angular.injector(["ng","myApp"])
+        //var $controller=inject.get('$controller');
+//        var scope = injector.get('$rootScope').$new()
+//        var MyController = $controller('MyController', {$scope: scope})
+
+
+        var app=angular.module("MyApp",[]);
+
+
+        //如果没有明确的声明依赖，则在内部需要调用toString分析函数的参数列表javascript的一些压缩器会破坏依赖的内容
+        //一般情况下 还可以依赖于行内注入声明如下的格式为一个数组，数组除了最后项为依赖注入的目标函数对象本身，其他的
+        // 均为依赖的字符串
+//        比如
+//        app.controller("MyController",["$scope","greeter", function ($scope,greeter) {
+//            $scope.sayHello=function(){
+//                greeter.greet("Hello!");
+//            }
+//        }]);
+
+        app.controller("MyController", function ($scope,greeter) {
+           $scope.sayHello=function(){
+               greeter.greet("Hello!");
+           }
+
+        });
+
+        app.factory("greeter",function(){
+           return{
+               greet:function(msg){
+                   alert(msg);
+               }
+           }
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+<button ng-click="sayHello()">Alert me</button>
+</div>
+</body>
+</html>

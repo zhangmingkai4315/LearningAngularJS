@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope,githubService,$timeout) {
+
+            $scope.showEvent= function () {
+                githubService.setUsername($scope.username);
+                githubService.events($scope.username).success(function(data){
+                    $scope.events=data["data"];
+                });
+            }
+            var timeout;
+            $scope.$watch('username',function(newUsername){
+                if(newUsername){
+                    if(timeout) $timeout.cancel(timeout);
+                    timeout=$timeout(function(){
+                        githubService.setUsername(newUsername);
+                        githubService.events(newUsername).success(function(data,status){
+                            $scope.events=data.data;
+                        },350);
+                    })
+                }
+            })
+        });
+        app.factory('UserService',function($http){
+
+            //每个服务尽量处理较为单一的事情，并且主要是保证控制器的简化
+            var curent_user;
+            return {
+                getCurrentUser:function(){
+                    return current_user;
+                },
+                setCurrentUser:function(user){
+                    curent_user=user;
+                }
+            }
+        });
+
+        app.factory("githubService",function($http){
+            var gitHubUrl='https://api.github.com';
+            var gitUser;
+            var runUserRequest=function(path){
+                return $http({
+                    method:'JSONP',
+                    url:gitHubUrl+'/users/'+gitUser+'/'+path+'?callback=JSON_CALLBACK'
+                });
+            };
+            return {
+                events:function(){
+                    return runUserRequest('events');
+                },
+                setUsername:function(username){
+                    gitUser=username;
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+<input type="text" ng-model="username">
+<button ng-click="showEvent()">ShowEvent</button>
+    <pre>{{events}}</pre>
+    <ul>
+        <li ng-repeat="event in events">
+            {{event.actor.login}}{{event.repo.name}}
+        </li>
+    </ul>
+</div>
+</body>
+</html>

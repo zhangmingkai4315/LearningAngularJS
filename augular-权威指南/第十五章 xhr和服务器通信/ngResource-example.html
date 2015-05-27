@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <script src="../../bower_components/ng-resource/dist/ng-resource.min.js"></script>
+    <title></title>
+    <script>
+
+        //Restangular可能更加的高效一些 ，特别是在处理级联的url可以直接使用
+//        比如创建一个factory服务
+//        app.factory('MessageService',function(Restangular){
+//            var restAngular=Restangular.withConfig(function(Congigurer){
+//                Congigurer.setBaseUrl('/api/v2/message');
+//            });
+//            var _messageService=restAngular.all('messages');
+//            return{
+//                getMessages:function(){
+//                    return _messageService.getList();
+//                }
+//            }
+//        })
+
+        var app=angular.module("MyApp",["ngResource"]);
+        app.factory('UserService',function(){
+            return $resource("/api/users/:id",{
+                id:'@'
+            },{
+                update:{
+                    method:'PUT'
+                },
+                sendMail:{
+                    method:'PUT',
+                    transformRequest:function(data,headerFn){
+                        return JSON.stringify(data);
+                    }
+                },
+                getMail:{
+                    method:'PUT',
+                    transformResponse:function(data,headerFn){
+                        return JSON.parse(data);
+                    }
+                }
+            });
+        });
+        app.controller("MyController", function ($scope) {
+
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+</div>
+</body>
+</html>

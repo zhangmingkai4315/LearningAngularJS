@@ -48,7 +48,6 @@
       app.config(function (myProviderProvider) {
           myProviderProvider.thingFromConfig="Setting in app.config"
       });
-
       app.controller('myProviderCtrl', function ($scope,myProvider) {
           $scope.data={};
           $scope.updateArtist= function () {

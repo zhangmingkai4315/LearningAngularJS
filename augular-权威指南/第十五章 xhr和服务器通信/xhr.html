@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+//        var app=angular.module('MyApp',[]).config(function($httpProvider,$cacheFactory){
+//            $httpProvider.defaults.cache=$cacheFactory('lru',{
+//                capacity:5
+//            });
+//        });
+
+        var app=angular.module('MyApp',[]).config(function($httpProvider){
+            $httpProvider.defaults.headers.common['X-Auth']='RandomString';
+        });
+        app.factory('myInterceptor',function($q){
+            var interceptor={
+                'request':function(config){
+                    return config;
+                },
+                'response':function(response){
+                    return response;
+                },
+                'requestError':function(rejection){
+                    return
+                }
+
+            }
+            return interceptor;
+        })
+        app.controller("MyController", function ($scope,$http,$log) {
+            $http.get("1.json",{cache:true})
+                    .success(function(data){
+                        $scope.name=data.name;
+                        $log.info(data);
+                    });
+
+            $http({
+                method:'GET',
+                url:'1.json',
+                params:{
+                    'username':'user'
+                },
+                cache:true,
+                responseType:'json'
+            }).then(function(response){
+                $log.info(response.data);
+                $log.info(response.status);
+            });
+
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+{{name}}
+</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+
+        //        包含的fn函数只会调用一次，factory 是一个单例对象
+        app.factory('myFactory',function(){
+            return {
+                'username':'auser',
+                setUsername:function(newUsername){
+                    this.username=newUsername;
+                },
+                getUsername:function(){
+                    return this.username;
+                }
+            }
+        });
+
+
+        //        包含的fn函数只会调用一次，service 是new出来的对象
+        app.service('myService',function(){
+            this.username="default";
+            this.setCurrentUser=function(username){
+                this.username=username;
+            }
+            this.getCurrentUser=function(){
+                return this.username;
+            }
+        });
+        app.provider('myProvider',function(){
+            var baseUrl="https://itunes.apple.com/search?term=";
+            var _artist='';
+            var _finalUrl='';
+            var makeUrl= function () {
+                _artist=_artist.split(' ').join('+');
+                _finalUrl=baseUrl+_artist+'&callback=JSON_CALLBACK';
+                return _finalUrl;
+            };
+            this.thingFromConfig='';
+
+            //必须定义自己的get方法
+            this.$get=function($http,$q){
+
+                return{
+
+                    callItunes:function(){
+                        makeUrl();
+                        var deferred=$q.defer();
+                        $http({
+                            method:'JSONP',
+                            url:_finalUrl
+                        }).success(function(data){
+                            deferred.resolve(data);
+                        }).error(function(){
+                            deferred.reject('There was an error');
+                        });
+                        return deferred.promise;
+                    },
+                    setArtist:function(artist){
+                        _artist=artist;
+                    },
+                    getArtist:function(){
+                        return _artist;
+                    },
+                    thingOnConfig:this.thingFromConfig
+                }
+            }
+
+        });
+        app.constant('apiKey','123456');
+
+
+        app.config(function (myProviderProvider,apiKey) {
+            myProviderProvider.thingFromConfig="Setting in app.config"+apiKey;
+
+        });
+        app.controller("MyController", function ($scope,$log,myFactory,myService) {
+            myFactory.setUsername("Mike")
+            myService.setCurrentUser("Mike-service");
+            $log.info(myFactory.getUsername());
+            $log.info(myService.getCurrentUser());
+        });
+
+        app.controller("secondController", function ($scope,$log,myFactory,myService) {
+            $log.info(myFactory.getUsername());
+            $log.info(myService.getCurrentUser());
+        });
+
+        app.controller("provideController", function ($scope,$log,myProvider) {
+          //  $log.info(myProvider.getUsername());
+            $log.info(myProvider.thingOnConfig)
+        });
+
+
+
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+</div>
+<div class="row" ng-controller="secondController">
+
+</div>
+
+<div class="row" ng-controller="provideController">
+
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]).config(function($httpProvider){
+            $httpProvider.interceptors.push('myInterceptor');
+            $httpProvider.defaults.headers.common['X-Requested-By']='MyAngularApp';
+            $httpProvider.defaults.headers.put['X-Posted-By']='MyAngularApp';
+        });
+        app.controller("MyController", function ($scope,$http,$log) {
+
+            $http.jsonp('https://api.github.com/username/?callback=JSON_CALLBACK').success(function(data){
+               // $log.info("HELLO");
+                $log.info(data);
+            })
+        });
+
+        app.factory('myInterceptor',function($q,$log){
+            var interceptor={
+                'request':function(config){
+                    $log.info("Request calling");
+                    $log.info(config);
+                    return config;//或者$q.when(config)
+                },
+                'response':function(response){
+                    $log.info("Response calling");
+                    $log.info(response.status);
+                    return response;
+                },
+                //请求错误的时候调用requestError
+                'requestError':function(rejection){
+                    $log.info("RequestError calling");
+                    return $q.reject(rejection);
+                },
+
+                //响应错误的时候调用responseError
+                'responseError':function(rejection){
+                    $log.info("ResponseError calling");
+                    return rejection; //return $q.reject(rejection);
+                }
+            }
+            return interceptor;
+        })
+
+
+
+//        angular会生成一个<script>标签，标签src="http://api.github.com?callback=angular.callbacks._0"
+          //使用jsonp一定要保证服务器为可信的否则会比较危险
+
+
+
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+</div>
+</body>
+</html>

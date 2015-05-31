@@ -1,5 +1,4 @@
 
-
 <div class="pusher">
 	    <div class="full height">
 			<div class="masthead segment"> 
@@ -27,25 +26,25 @@
 						<div class="wide column ">
 							<div class="required field">
 								 <div class="ui icon input">
-							     	<input type="text" placeholder="用户名" ng-model="user.username" unique-email>
+							     	<input type="text" placeholder="用户名" ng-model="user.username" unique-email ng-minlength="6">
 							     	<i class="user icon"></i>
 							     </div>
 							</div>
 							<div class="required field">
 							     <div class="ui icon input">
-							        <input type="text" placeholder="真实姓名" ng-model="realname">
+							        <input type="text" placeholder="真实姓名" ng-model="user.realname" required>
 							        <i class="user icon"></i>
 							     </div>
 							</div>
 							<div class="required field">
 							     <div class="ui icon input">
-							        <input type="password" placeholder="注册密码" ng-model="user.password">
+							        <input type="password" placeholder="注册密码" ng-model="user.password" required ng-minlength="6">
 							        <i class="lock icon"></i>
 							     </div>
 							</div>
 							<div class="required field">
 							     <div class="ui icon input">
-							        <input type="password" placeholder="确认密码" ng-model="repassword" validate-equals="user.password">
+							        <input type="password" placeholder="确认密码" ng-model="repassword" validate-equals="user.password" required>
 							        <i class="lock icon"></i>
 							     </div>
 							</div>
@@ -74,7 +73,4 @@
         });
 
     });
-        
-    
-    
 </script>

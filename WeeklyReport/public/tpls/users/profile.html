@@ -24,23 +24,23 @@
           <a ng-click="logout()" class="item">
             <i class="power big icon"></i>登出
           </a>
-          </h2>
+
         </div>
     </div>
   <div class="body fourteen wide column">
-    <div class="ui four column grid">    
+    <div class="ui three column grid">
         <div class="column">      
           <div class="ui card">
               <div class="image">
-                <img src="./image/photos/steve.jpg">
+                <img ng-src="{{profile.photos}}">
               </div>
               <div class="content">
-                <a class="header">Stevie</a>
+                <a class="header" ng-bind="profile.realname">Stevie</a>
                 <div class="meta">
-                  <span class="date">系统监控组</span>
+                  <span class="date" ng-bind="profile.group"></span>
                 </div>
-                <div class="description">
-                  Stevie是一个充满活力的同事，平时喜欢跑步，读书和弹吉他。
+                <div class="description" ng-bind="profile.slogen">
+
                 </div>
               </div>
               <div class="extra content">
@@ -142,46 +142,46 @@
             </div>
         </div>
         </div>
-        <div class="column">
-            <div class="Lastest Information">
-             <div class="ui feed">
-              <h2 class="ui dividing header">最新消息</h2>
-                    <div class="event">
-                      <div class="label">
-                        <img src="/images/avatar/small/helen.jpg">
-                      </div>
-                      <div class="content">
-                        <div class="date">
-                          1天前
-                        </div>
-                        <div class="summary">
-                           <a>Helen Troy</a> 上传了两张图片
-                        </div>
-                        <div class="extra images">
-                          <a><img src="/images/wireframe/image.png"></a>
-                          <a><img src="/images/wireframe/image.png"></a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="event">
-                      <div class="label">
-                        <img src="/images/avatar/small/laura.jpg">
-                      </div>
-                      <div class="content">
-                        <div class="date">
-                          2天前
-                        </div>
-                        <div class="summary">
-                           <a>Laura Faucet</a> 发表了评论
-                        </div>
-                        <div class="extra text">
-                          你的项目进度好慢！
-                        </div>
-                      </div>
-                    </div>
-             </div>
-            </div>
-        </div>
+        <!--<div class="column">-->
+            <!--<div class="Lastest Information">-->
+             <!--<div class="ui feed">-->
+              <!--<h2 class="ui dividing header">最新消息</h2>-->
+                    <!--<div class="event">-->
+                      <!--<div class="label">-->
+                        <!--<img src="/images/avatar/small/helen.jpg">-->
+                      <!--</div>-->
+                      <!--<div class="content">-->
+                        <!--<div class="date">-->
+                          <!--1天前-->
+                        <!--</div>-->
+                        <!--<div class="summary">-->
+                           <!--<a>Helen Troy</a> 上传了两张图片-->
+                        <!--</div>-->
+                        <!--<div class="extra images">-->
+                          <!--<a><img src="/images/wireframe/image.png"></a>-->
+                          <!--<a><img src="/images/wireframe/image.png"></a>-->
+                        <!--</div>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="event">-->
+                      <!--<div class="label">-->
+                        <!--<img src="/images/avatar/small/laura.jpg">-->
+                      <!--</div>-->
+                      <!--<div class="content">-->
+                        <!--<div class="date">-->
+                          <!--2天前-->
+                        <!--</div>-->
+                        <!--<div class="summary">-->
+                           <!--<a>Laura Faucet</a> 发表了评论-->
+                        <!--</div>-->
+                        <!--<div class="extra text">-->
+                          <!--你的项目进度好慢！-->
+                        <!--</div>-->
+                      <!--</div>-->
+                    <!--</div>-->
+             <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
   </div>
 
@@ -193,7 +193,7 @@
  
     <div class="ui segment"> 
       <h1 class="ui header">
-      <img src="./image/photos/steve.jpg" class="ui circular image">
+      <img ng-src="{{profile.photos}}" class="ui circular image">
       <div class="content">
           我的工作笔记
       </div>
@@ -253,13 +253,12 @@
   </div>
   <div class="content">
     <div class="ui medium image">
-      <img ng-src="/image/photos/{{profile.photos}}">
+      <img ng-src="{{profile.photos}}" ng-click="changePhotos()">
     </div>
     <div class="description">
     <h2 class="ui dividing header">完善信息</h2>
       <div class="ui header">我们为您挑选了一张最适合您的照片</div>
-      <p>照片来自于<a href="https://www.gravatar.com" target="_blank">gravatar</a>网站，选择后将和您的账号绑定</p>
-     
+      <p>照片来自于<a href="https://www.gravatar.com" target="_blank">gravatar</a>网站</p>
       <form class="ui form">
           
           <div class="two fields">
@@ -267,8 +266,8 @@
               <div class="grouped fields">
                  <label for="alone">选择您的工作组?</label>
                  <select class="ui search dropdown" ng-model="profile.group">
-                   <option value="se" ng-selected="profile.sex=='se'">系统监控组</option>
-                    <option value="devops" ng-selected="profile.sex=='devops'">运维开发组</option>
+                   <option value="系统监控组" ng-selected="profile.sex=='se'">系统监控组</option>
+                    <option value=运维开发组 ng-selected="profile.sex=='devops'">运维开发组</option>
                  </select>
               </div>
             </div>
@@ -293,6 +292,4 @@
     </div>
   </div>
 </div>
-
-
 

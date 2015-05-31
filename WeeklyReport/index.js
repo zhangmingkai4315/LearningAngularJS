@@ -7,9 +7,8 @@ var flash = require('connect-flash');
 mongoose.connect("mongodb://127.0.0.1/weekReports");
 var Users=require('./model/Users');
 var WeeklyReports=require('./model/weeklyReport');
-
 var reportsRoute=require('./router/api/reports');
-
+var userApi=require('./router/api/users');
 var passport=require('passport');
 var session=require('express-session');
 
@@ -36,6 +35,7 @@ app.use(express.static(__dirname + '/public'));
 //定义api的路由处理函数
 app.use('/api',reportsRoute);
 app.use('/auth',authenticate);
+app.use('/user',userApi);
 app.get('/', function(req, res){
   res.sendFile(__dirname+'/public/index.html');
 });

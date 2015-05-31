@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope,$timeout) {
+            //对于任何的数据输入到ng-model都会绑定一个$watch到$watch列表$$watchers
+            //$digest循环会启动一个脏值检查的程序遍历这个列表中的数据
+            //原生浏览器的规范 Object.observe()
+            //一般会运行两次，保证其中若是包含了更新其他值的变化时，第一次无法被追踪到
+            $scope.$watch('name',function(newVal,oldValue,scope){
+                if(newVal==oldValue){
+                    $scope.status="Stable";
+                    return;
+                }else{
+                    $scope.status="Changed";
+                }
+            });
+//            当点击的时候会调用$scope.$aply 进入$digest循环
+            $scope.login=function(){
+                $scope.status="Login...";
+//                setTimeout(function(){
+//                    $scope.status="Log in !"
+//                    console.log("Log in");
+//                    //手动强制$digest循环
+//                    $scope.$apply();
+//                },2000);
+            $timeout(function(){
+                $scope.status="log in!";
+            },1000)
+
+            }
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+<input ng-model="name">
+<br>
+<button ng-click="login()">Login</button>
+    <span ng-bind="status"></span>
+</div>
+</body>
+</html>

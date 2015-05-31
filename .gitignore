@@ -1,4 +1,4 @@
 bower_components
 *.xml
-
+myApp
 .idea/workspace.xml

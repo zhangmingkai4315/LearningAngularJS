@@ -46,7 +46,8 @@ passport.use('login', new LocalStrategy({
 				if(!isValidPassword(user,password)){
 					return done('密码无效，请重试',false);
 				}else{
-					
+					//validUser.push(user.username);
+					//var returnToken={token:user._id};
 					return done(null,user);
 				}
 			});

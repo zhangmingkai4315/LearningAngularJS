@@ -1,0 +1,23 @@
+<html ng-app="myApp">
+<head>
+    <title>MyApp WebSite</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="static/foundation/css/foundation.min.css">
+    <script src="static/jquery/dist/jquery.min.js"></script>
+    <script src="static/foundation/js/foundation.min.js"></script>
+    <script src="static/angular/angular.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+<div class="row">
+    <div ng-controller="HomeController">
+        <h3>Button hits:{{hits}}</h3>
+        <button ng-click="registerHit()">
+            Hit me.if you dare
+        </button>
+    </div>
+</div>
+
+</body>
+</html>

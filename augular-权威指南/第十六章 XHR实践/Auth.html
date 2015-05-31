@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-cookies.min.js"></script>-->
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",["ngCookies","ngRoute"]);
+        app.config(
+                function ($routeProvider,ACCESS_LEVELS) {
+                    $routeProvider
+                            .when('/other', {
+                                controller: 'otherCtrl',
+                                templateUrl: 'content/views/other.html',
+                                access_level: ACCESS_LEVELS.pub
+                            })
+                            .when('/', {
+                                controller: 'homeCtrl',
+                                templateUrl: 'content/views/home.html'
+                            })
+                            .when('/other/：id', {
+                                controller: 'otherDetailCtrl',
+                                templateUrl: 'content/views/otherDetail.html',
+                                access_level: ACCESS_LEVELS.user
+                            })
+                            .otherwise({
+                                redirectTo: '/'
+                            });
+                });
+
+        app.run(function($rootScope,$location,Auth){
+            $rootScope.on("$rootChangeStart",function(evt,next,curr){
+                if(!Auth.isAuthorized(next.$$route.access_level)){
+                    if(Auth.isLoggedIn()){
+                        $location.path('/');
+                    }else{
+                        $location.path('/login');
+                    }
+                }
+            })
+        });
+        app.constant('ACCESS_LEVELS',{
+            pub:1,
+            user:2
+        });
+        app.factory("Auth",function($cookieStore,ACCESS_LEVELS){
+            var _user=$cookieStore.get('user');
+            var setUser=function(user){
+                if(!user.role||user.role<0){
+                    user.role=ACCESS_LEVELS.pub;
+                }
+                _user=user;
+                $cookieStore.put('user',_user);
+            };
+            return {
+                isAuthorized:function(level){
+                    return _user.role>=level;
+                },
+                setUser:setUser,
+                isLoggedIn:function(){
+                    return _user?true:false;
+                },
+                getUser:function(){
+                    return _user;
+                },
+                getId:function(){
+                    return _user?_user.id:null;
+                },
+                getToken:function(){
+                    return _user?_user.token:'';
+                },
+                logout:function(){
+                    $cookieStore.remove('user');
+                    _user=null;
+                }
+            };
+        });
+
+
+        app.service('Backend',function($http,$q,$rootScope,Auth){
+
+            this.getDashBoardData=function(){
+                $http({
+                    method:'GET',
+                    url:"/api/getDashBoard",
+                    params:{
+                        token:Auth.getToken()  //可以做一个http的请求连接器 每次都带权限的去访问用户的请求
+                    }
+                }).success(function(data){
+                    return data.data;
+                }).catch(function(reason){
+                    $q.reject(reason);
+                })
+            }
+        });
+        app.controller("MyController", function ($scope) {
+
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+</div>
+</body>
+</html>

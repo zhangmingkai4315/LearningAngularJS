@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+
+        var app=angular.module("MyApp",[]);
+//        app.controller("DashBoardController",['$scope','GithubService' function ($scope,UserService) {
+//            User.getPullRequest(123).then(function(data){
+//                $scope.pullRequests=data.data;
+//            });
+//        }]);
+        app.factory('GithubService',['$q','$http','$timeout',function($q,$http,$timeout){
+            var getEventsFromRepo=function(repo){
+               var deferred=$q.defer();
+//                $http.get('https://api.github.com/repos/'+repo+'/pulls').success(function(data){
+//                    deferred.resolve(data);
+//                }).error(function(reason){
+//                    deferred.reject(reason);
+//                });
+//                return deferred.promise
+                $timeout(function () {
+
+                    deferred.resolve(repo);
+
+                },2000);
+                return deferred.promise;
+            };
+            var service= {
+                makeMultipleRequests: function (repos) {
+                    var d = $q.defer();
+                    var percentComplete = 0;
+                    output = [];
+                    var all_q=[];
+                    for (var i = 0; i < repos.length; i++) {
+                       all_q.push(getEventsFromRepo(repos[i]));
+                    }
+                    return $q.all(all_q)
+                }
+            };
+
+            return service;
+        }]);
+
+
+        app.controller('HomeController',function($scope,GithubService,$log){
+            GithubService.makeMultipleRequests(['auser/beehive','angular/angular.js'])
+            .then(function(result){
+                    $log.info("Result :"+result);
+            },function(err){
+                        $log.info("Error :"+err);
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="row">
+<!--<h1>Open Pull request for angular js</h1>-->
+    <!--<ul ng-controller="DashBoardController">-->
+        <!--<li ng-repeat="pr in pullRequests">-->
+            <!--{{pr.title}}-->
+        <!--</li>-->
+    <!--</ul>-->
+<!--</div>-->
+
+    <div ng-controller="HomeController">
+
+    </div>
+</body>
+</html>

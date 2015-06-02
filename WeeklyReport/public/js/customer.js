@@ -188,8 +188,22 @@ app.factory('photosService',function($http){
 		}
 	}
 });
-app.controller('mainController', function($rootScope,$location,$q,$http,$scope,localStorageService){
+app.controller('mainController', function($rootScope,$location,$timeout,$q,$http,$scope,localStorageService){
 	$scope.username=localStorageService.get('user');
+	$scope.itemDisplay={
+		"hasReport":false,
+		"timeOutReport":false
+	};
+
+	$scope.CurrentWeekReport={
+		number:0,
+		reports:[]
+	};
+	$scope.NextWeekReport={
+		number:0,
+		reports:[]
+	};
+
 	$('.ui.checkbox').checkbox();
 	$scope.profile={
 		"username":"",
@@ -200,21 +214,85 @@ app.controller('mainController', function($rootScope,$location,$q,$http,$scope,l
 	};
 	if($scope.username.username){
 		// 获取主页数据
+		//var deferred=$q.defer();
+		//$http.get('/user/profile').success(function(data){
+		//	$scope.profile.username=data.username;
+		//	$scope.profile.photos=data.photoUrl;
+		//	$scope.profile.group=data.group;
+		//	$scope.profile.slogen=data.slogen;
+		//	$scope.profile.realname=data.realname;
+		//	$http.get('/api/currentWeek/report/'+$scope.profile.username).success(function(data){
+		//		$scope.CurrentWeekReport.reports=data.currentWR;
+		//		$scope.NextWeekReport.reports=data.nextWR;
+		//		$scope.itemDisplay.hasReport=true;
+		//		$timeout(function(){$(".ui.teal.progress").progress()},1000);
+		//
+		//	}).error(function(){
+		//		$scope.itemDisplay.timeOutReport=true;
+		//	});
+		//}).error(function(){
+		//	$scope.itemDisplay.timeOutReport=true;
+		//});
+		var defeered_profile=$q.defer();var defeered_reports=$q.defer();
 		$http.get('/user/profile').success(function(data){
-			console.log(data);
+			defeered_profile.resolve(data);
+		}).error(function(err){
+			defeered_profile.reject(err);
+		});
+		defeered_profile.promise.then(function(data){
 			$scope.profile.username=data.username;
 			$scope.profile.photos=data.photoUrl;
 			$scope.profile.group=data.group;
 			$scope.profile.slogen=data.slogen;
 			$scope.profile.realname=data.realname;
+			defeered_reports.resolve(data.username);
+			return defeered_reports.promise;
+		}).then(function(username){
+			$http.get('/api/currentWeek/report/'+username).success(function(data){
+
+				$scope.CurrentWeekReport.reports=data.currentWR;
+				$scope.NextWeekReport.reports=data.nextWR;
+				$scope.itemDisplay.hasReport=true;
+				$timeout(function(){$(".ui.teal.progress").progress()},1000);
+			}).error(function(err){
+
+			});
+			$http.get('/api/currentWeek/feedback/'+username).success(function(data){
+
+			}).error(function(err){
+
+			})
+
 		});
+
+
+
 	}
 	else{
 		$location.path("/");
 	}
-	$scope.photosList=['/image/photos/lucy.jpg','/image/photos/steve.jpg'];
+
+	//$scope.$watch('itemDisplay.hasReport',function(newVal,oldValue,scope){
+	//	if(newVal==oldValue){
+	//		return;
+	//	}else{
+	//		console.log(newVal);
+	//
+	//	}
+	//});
+
+
+	//$(".ui.teal.progress").progress();
+	//此处应该从服务器返回
+	//$scope.photosList=['1.jpg','2'];
+	var photosNumber=0;
 	$scope.changePhotos=function(){
-		$scope.profile.photos=$scope.photosList[0];
+		if(photosNumber<7){
+			photosNumber++;
+		}else{
+			photosNumber=1;
+		}
+		$scope.profile.photos='/image/photos/'+photosNumber+'.jpg';
 	}
 
 	$scope.logout=function(){
@@ -223,8 +301,56 @@ app.controller('mainController', function($rootScope,$location,$q,$http,$scope,l
 		$location.path("/");
 	};
 	$scope.showEditProfile=function(){
-		$('.ui.modal').modal('show');
+		$('.ui.modal.editProfile').modal('show');
 	};
+	$scope.showNewReportModel=function(){
+
+		$('.coupled.modal')
+			.modal({
+				allowMultiple: false
+			});
+
+// attach events to buttons
+		$('.second.modal')
+			.modal('attach events', '.first.modal .button.action');
+// show first now
+
+		$('.first.modal')
+			.modal('show');
+	}
+
+
+
+
+
+	$scope.addNewItem=function(){
+		if($scope.currentWR_projectName!==""&&($scope.currentWR_finished<=100)&&($scope.currentWR_finished>=0)){
+		$scope.CurrentWeekReport.number++;
+		var projectObj={
+			projectName:$scope.currentWR_projectName,
+			finished:$scope.currentWR_finished||100,
+			timeCost:$scope.currentWR_time||0
+		};
+
+		$scope.CurrentWeekReport.reports.push(projectObj);
+		projectObj=null;
+		$scope.currentWR_projectName="";
+		$scope.currentWR_finished=0;
+			$scope.currentWR_time=0
+		}else{
+		  $scope.currentWR_error_message="请正确输入信息(项目名称非空，完成度填写范围1-100)";
+		}
+		console.log($scope.CurrentWeekReport)
+	}
+
+	$scope.removeItem=function(){
+
+		$scope.CurrentWeekReport.reports.splice($scope.CurrentWeekReport.number-1,1);
+		if($scope.CurrentWeekReport.number>0)
+			$scope.CurrentWeekReport.number--;
+
+
+	}
 
 	$scope.submitProfile=function(){
 		console.log($scope.profile);
@@ -236,9 +362,50 @@ app.controller('mainController', function($rootScope,$location,$q,$http,$scope,l
 	}
 
 
+	$scope.addNewItem_nextWR=function(){
+		if($scope.nextWR_projectName!==""&&($scope.nextWR_finished<=100)&&($scope.nextWR_finished>=0)){
+			$scope.NextWeekReport.number++;
+			var projectObj={
+				projectName:$scope.nextWR_projectName,
+				finished:$scope.nextWR_finished||100,
+				timeCost:$scope.nextWR_time
+			};
+
+			$scope.NextWeekReport.reports.push(projectObj);
+			projectObj=null;
+			$scope.nextWR_projectName="";
+			$scope.nextWR_finished=0;
+			$scope.nextWR_time=0
+		}else{
+			$scope.error_message_nextWR="请正确输入信息(项目名称非空，完成度填写范围1-100)";
+		}
+	}
+
+	$scope.removeItem_nextWR=function(){
+
+		$scope.NextWeekReport.reports.splice($scope.NextWeekReport.number-1,1);
+		if($scope.NextWeekReport.number>0)
+			$scope.NextWeekReport.number--;
+
+	}
 
 
-	
+	$scope.submitReport=function(){
+		console.log($scope.CurrentWeekReport);
+		console.log($scope.NextWeekReport);
+		var reports={
+			CurrentWeekReport:$scope.CurrentWeekReport,
+			NextWeekReport:$scope.NextWeekReport
+		}
+		if($scope.CurrentWeekReport.number!==0&&$scope.NextWeekReport.number!==0) {
+			$scope.itemDisplay.hasReport = 1;
+		}
+		$http.post('/api/reports/new',reports).success(function(data){
+			console.log(data);
+		}).error(function(err){
+			console.log(err);
+		});
+	}
 });
 
 

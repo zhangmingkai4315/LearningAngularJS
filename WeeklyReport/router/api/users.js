@@ -22,14 +22,22 @@ router.get('/profile',function(req,res,next){
 router.put('/profile',function(req,res){
     if(req.query.token){
         //查看token绑定的用户名 此处是直接使用了mongodb的_id
-        //User.findOne({'_id':req.query.token},function(err,docs){
-        //    if(err){
-        //        res.status(500).send("ServerErro");
-        //    }else{
-        //        res.status(200).send(200,docs);
-        //    }
-        //});
-        res.send("UpdateFinish");
+        User.findOne({'_id':req.query.token},function(err,docs){
+            if(err){
+                res.status(500).send("ServerErro");
+            }else{
+                if(docs.username==req.body.username) {
+                    docs.set("slogen", req.body.slogen);
+                    docs.set("photoUrl", req.body.photos);
+                    docs.set("group", req.body.group);
+                    docs.save();
+                    res.status(200).send(docs);
+                }else{
+                    res.status(403).send("Forbidden");
+                }
+            }
+        });
+
 
     }else{
         res.status(403).send("UnAuth");

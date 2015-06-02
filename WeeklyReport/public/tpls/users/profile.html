@@ -27,8 +27,8 @@
 
         </div>
     </div>
-  <div class="body fourteen wide column">
-    <div class="ui three column grid">
+  <div class="body fourth wide column">
+    <div class="ui four column grid">
         <div class="column">      
           <div class="ui card">
               <div class="image">
@@ -51,137 +51,69 @@
                 </a>
               </div>
           </div>
-        </div>    
+        </div>
         <div class="column">
                 <div class="ThisWeek">
-                  <h2 class="ui dividing header">本周工作内容</h2>
-                  <div class="ui big ordered animated list">
-                    <div class="item">
-                      
-                      <div class="content">
-                          <div class="header">值班</div>
-                          <div class="ui teal progress progressExample" data-value="100" data-total="100" id="example1">
-                        <div class="bar"></div>
-                        <div class="label">100% 已完成</div>
+                  <h2 class="ui dividing header">本周工作内容
+                      <i class="small edit icon" ng-hide="!itemDisplay.hasReport" ng-click="showNewReportModel()" ></i></h2>
+                <div class="positive ui icon button" ng-hide="itemDisplay.hasReport" ng-click="showNewReportModel()">
+                    <i class="icon add"></i>点击创建新记录
+                </div>
+              <div class="ui big ordered animated list" ng-show="itemDisplay.hasReport" ng-repeat="report in CurrentWeekReport.reports">
+                <div class="item">
+                  <div class="content">
+                      <div class="header">{{report.projectName}}</div>
+                      <div class="ui teal progress progressExample" data-value="{{report.finished}}" data-total="100">
+                      <div class="bar"></div>
+                      <div class="label">完成百分比:{{report.finished}}%,花费时间:{{report.timeCost}}天</div>
                       </div>
-                      </div>
-                  
-                    </div>
-                    <div class="item">
-                      
-                      <div class="content">
-                        <div class="header">开发日志管理系统</div>
-                          <div class="ui teal progress progressExample" data-value="50" data-total="100" id="example2">
-                        <div class="bar"></div>
-                        <div class="label">50% 已完成</div>
-                      </div>
-                      </div>
-                    </div>
-                    <div class="item">
-                      
-                      <div class="content">
-                        <div class="header">学习Mean框架</div>
-                          <div class="ui teal progress progressExample" data-value="74" data-total="100" id="example3">
-                        <div class="bar"></div>
-                        <div class="label">74% 已完成</div>
-                      </div>
-                      </div>
-                       </div>
                   </div>
                 </div>
-        </div>
-        <div class="column">
-            <div class="NextWeek">
-              <h2 class="ui dividing header">下周计划内容</h2>
-              <div class="ui big ordered animated list">
-                <div class="item">
-                  
-                  <div class="content">
-                      <div class="header">值班</div>
-                      <div class="ui teal progress progressExample" data-value="100" data-total="100" id="example4">
-                    <div class="bar"></div>
-                    <div class="label">计划完成 100%</div>
-                  </div>
-                  </div>
-              
-                </div>
-
-                <div class="item">
-                  
-                  <div class="content">
-                    <div class="header">开发日志管理系统</div>
-                      <div class="ui teal progress progressExample" data-value="70" data-total="100" id="example5">
-                    <div class="bar"></div>
-                    <div class="label">70% 计划完成</div>
-                  </div>
-                  </div>
-                </div>
-                <div class="item">
-                  
-                  <div class="content">
-                    <div class="header">学习Mean框架</div>
-                      <div class="ui teal progress progressExample" data-value="94" data-total="100">
-                    <div class="bar"></div>
-                    <div class="label">94% 计划完成</div>
-                  </div>
-                  </div>
-                   </div>
-
-                   <div class="item">
-                  
-                  <div class="content">
-                    <div class="header">出差杭州</div>
-                      <div class="ui teal progress progressExample" data-value="100" data-total="100">
-                    <div class="bar"></div>
-                    <div class="label">100% 计划完成</div>
-                  </div>
-                  </div>
-                   </div>
-
-
+              </div>
             </div>
-        </div>
-        </div>
-        <!--<div class="column">-->
-            <!--<div class="Lastest Information">-->
-             <!--<div class="ui feed">-->
-              <!--<h2 class="ui dividing header">最新消息</h2>-->
-                    <!--<div class="event">-->
-                      <!--<div class="label">-->
-                        <!--<img src="/images/avatar/small/helen.jpg">-->
-                      <!--</div>-->
-                      <!--<div class="content">-->
-                        <!--<div class="date">-->
-                          <!--1天前-->
-                        <!--</div>-->
-                        <!--<div class="summary">-->
-                           <!--<a>Helen Troy</a> 上传了两张图片-->
-                        <!--</div>-->
-                        <!--<div class="extra images">-->
-                          <!--<a><img src="/images/wireframe/image.png"></a>-->
-                          <!--<a><img src="/images/wireframe/image.png"></a>-->
-                        <!--</div>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="event">-->
-                      <!--<div class="label">-->
-                        <!--<img src="/images/avatar/small/laura.jpg">-->
-                      <!--</div>-->
-                      <!--<div class="content">-->
-                        <!--<div class="date">-->
-                          <!--2天前-->
-                        <!--</div>-->
-                        <!--<div class="summary">-->
-                           <!--<a>Laura Faucet</a> 发表了评论-->
-                        <!--</div>-->
-                        <!--<div class="extra text">-->
-                          <!--你的项目进度好慢！-->
-                        <!--</div>-->
-                      <!--</div>-->
-                    <!--</div>-->
-             <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+            </div>
+        <div class="column">
+                <div class="NextWeek">
+                  <h2 class="ui dividing header">下周计划内容</h2>
+                  <div class="ui big ordered animated list" ng-show="itemDisplay.hasReport" ng-repeat="report in NextWeekReport.reports">
+                      <div class="item">
+                          <div class="content">
+                              <div class="header">{{report.projectName}}</div>
+                              <div class="ui teal progress progressExample" data-value="{{report.finished}}" data-total="100" id="example1">
+                                  <div class="bar"></div>
+                                  <div class="label">计划完成百分比:{{report.finished}}%,预计时间:{{report.timeCost}}天</div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+            </div>
+            </div>
+        <div class="column">
+            <h2 class="ui dividing header">最新评论消息</h2>
+                <div class="Lastest Information">
+                 <div class="ui feed" ng-show="itemDisplay.hasReport">
+
+                        <div class="event">
+                          <div class="label">
+                            <img ng-src={{feedback}}>
+                          </div>
+                          <div class="content">
+                            <div class="date">
+                              2天前
+                            </div>
+                            <div class="summary">
+                               <a>Laura Faucet</a> 发表了评论
+                            </div>
+                            <div class="extra text">
+                              你的项目进度好慢！
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+                </div>
+            </div>
+
+
     </div>
   </div>
 
@@ -227,7 +159,6 @@
         <i class="paint brush icon"></i>
         发表于: 2015年03月10日 22:30:40
       </div>
-
     </div>
   </div>
 
@@ -236,7 +167,7 @@
 </div>
 
 
-
+</div>
 
 
 <script type="text/javascript-lazy">
@@ -246,7 +177,7 @@
 
 <!-- UI model  -->
 
-<div class="ui modal">
+<div class="ui editProfile modal">
   <i class="close icon"></i>
   <div class="header">
     编辑资料
@@ -291,5 +222,123 @@
       <i class="checkmark icon"></i>
     </div>
   </div>
+</div>
+
+
+
+<!--以下代码为更新新的Reports时使用-->
+
+<div class="ui first coupled modal">
+    <div class="header">
+        本周工作内容总结
+    </div>
+    <div class="content">
+        <div class="image">
+            <i class="right arrow icon"></i>
+        </div>
+        <div class="description">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>完成进度</th>
+                    <th>花费时间</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="report in CurrentWeekReport.reports">
+                    <td>{{report.projectName}}</td>
+                    <td>{{report.finished}}</td>
+                    <td>{{report.timeCost}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="ui form">
+                <form novalidate ng-submit="addNewItem()">
+                <div class="fields">
+                    <div class="ten wide field">
+                        <input type="text" placeholder="任务名称" ng-model="currentWR_projectName" required ng-maxlength="100">
+                    </div>
+                    <div class="three wide field">
+
+                        <input type="number" placeholder="完成百分比" ng-model="currentWR_finished" required ng-maxlength="50">
+
+                    </div>
+                    <div class="three wide field">
+
+                        <input type="number" placeholder="花费时间" ng-model="currentWR_time" ng-maxlength="50">
+
+                    </div>
+                </div>
+                <button class="ui primary button">新增<i class="add icon"></i></button>
+                    <button class="ui primary button" ng-click="removeItem()">移除<i class="remove icon"></i></button>
+                    <span ng-bind="currentWR_error_message"></span>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="primary ui button action">下周计划任务填写</div>
+    </div>
+</div>
+
+
+<div class="ui  second coupled modal">
+    <div class="header">
+        下周工作任务安排
+    </div>
+    <div class="content">
+        <div class="image">
+            <i class="smile icon"></i>
+        </div>
+        <div class="description">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>计划完成进度</th>
+                    <th>计划时间</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="report in NextWeekReport.reports">
+                    <td>{{report.projectName}}</td>
+                    <td>{{report.finished}}</td>
+                    <td>{{report.timeCost}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="ui form">
+                <form novalidate ng-submit="addNewItem_nextWR()">
+                    <div class="fields">
+                        <div class="ten wide field">
+                            <input type="text" placeholder="任务名称" ng-model="nextWR_projectName" required ng-maxlength="100">
+                        </div>
+                        <div class="three wide field">
+
+                            <input type="number" placeholder="计划完成进度" ng-model="nextWR_finished" required ng-maxlength="50">
+
+                        </div>
+                        <div class="three wide field">
+
+                            <input type="number" placeholder="计划时间" ng-model="nextWR_time" ng-maxlength="50">
+
+                        </div>
+                    </div>
+                    <button class="ui primary button">新增<i class="add icon"></i></button>
+                    <button class="ui primary button" ng-click="removeItem_nextWR()">移除<i class="remove icon"></i></button>
+                    <span ng-bind="error_message_nextWR"></span>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui primary button" ng-click="submitReport()">
+            <i class="checkmark icon"></i>
+            提交
+        </div>
+    </div>
 </div>
 

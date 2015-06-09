@@ -1,0 +1,19 @@
+{
+  "name": "app",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zhangmingkai4315/LearningAngularJS",
+  "authors": [
+    "zhangmingkai4315 <zhangmingkai19892013@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-mocks": "~1.4.0"
+  }
+}

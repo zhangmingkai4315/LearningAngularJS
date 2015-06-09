@@ -3,5 +3,5 @@ bower_components
 myApp
 .idea/workspace.xml
 **/bower_components
-augular-权威指南/第十九章测试/app/bower_components/*
-augular-权威指南/第十九章测试/app/node_modules/*
+angular-权威指南/第十九章测试/app/bower_components/*
+angular-权威指南/第十九章测试/app/node_modules/*

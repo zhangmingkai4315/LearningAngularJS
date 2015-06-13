@@ -146,5 +146,71 @@ describe('Routes tests',function(){
             });
      });
     });
+});
+
+
+describe('PasswordController',function(){
+    beforeEach(module('app'));
+    var $controller;
+    beforeEach(inject(function(_$controller_){
+       $controller=_$controller_;
+    }));
+
+    describe("$scope.grade",function(){
+        var $scope,controller;
+        beforeEach(function(){
+            $scope = {};
+            controller = $controller('PasswordController', { $scope: $scope });
+        });
+        it('sets the strength to strong if the length is >8',function(){
+
+            $scope.password = 'longerthaneightchars';
+            $scope.grade();
+            expect($scope.strength).toEqual('strong');
+        });
+        it('sets the strength to "weak" if the password length <3 chars', function() {
+
+            $scope.password = 'a';
+            $scope.grade();
+            expect($scope.strength).toEqual('weak');
+        });
+    });
+
+//对于Filter的测试
+    describe('length filter', function() {
+
+        beforeEach(inject(function(_$filter_){
+            $filter= _$filter_;
+        }));
+
+        it('returns 0 when given null', function() {
+            var length = $filter('length');
+            expect(length(null)).toEqual(0);
+        });
+
+        it('returns the correct value when given a string of chars', function() {
+            var length = $filter('length');
+            expect(length('abc')).toEqual(3);
+        });
+    });
+
+
+    describe("Directive test",function(){
+        var $compile,$rootScope;
+        beforeEach(inject(function(_$compile_,_$rootScope_){
+            $compile = _$compile_;
+            $rootScope = _$rootScope_;
+        }));
+        it('Replaces the element with the appropriate content', function() {
+            // Compile a piece of HTML containing the directive
+            var element = $compile("<a-great-eye></a-great-eye>")($rootScope);
+            $rootScope.$digest();
+            expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
+        });
+    })
+
+
+
 
 });
+

@@ -12,8 +12,8 @@
 <body>
 <div class="row">
     <div ng-controller="HomeController">
-        <h3>Button hits:{{hits}}</h3>
-        <button ng-click="registerHit()">
+        <h3>Button hits:<span>{{hits}}</span></h3>
+        <button id="hitme" ng-click="registerHit()">
             Hit me.if you dare
         </button>
     </div>

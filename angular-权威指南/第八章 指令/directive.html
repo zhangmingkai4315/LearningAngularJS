@@ -1,39 +1,102 @@
 <!DOCTYPE html>
-<html ng-app="MyApp">
+<html ng-app="myApp">
 <head lang="en">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
-    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
     <script src="../../bower_components/angular/angular.js"></script>
     <title></title>
     <script>
-        var app=angular.module("MyApp",[]);
-        app.controller("MyController", function ($scope) {
+        var app=angular.module('myApp',[]);
+        app.directive('myWelcomeDirective', function () {
+            return {
+                scope: {
+                    clickme:'&'
+                },
+                template: '<button ng-click="clickme()">ClickMe</button>'
+            };
         });
 
-        app.directive('myDirective',function(){
+        app.directive("sideBar",function(){
             return{
-
-                restrict:'E',
-                replace:true,
+                restrict:'A',
                 scope:{
-                    myUrl:'@',//找对应的范围内的属性为my-url的值并赋值
-                    myLinkText:'@',//找对应的范围内的属性为my-link-text的值并赋值
-                    myName:'=someThing'
+                    title:'@'
                 },
-                template:'<a href="{{myName}}">{{myLinkText}},My name is {{myName}}</a>'
+                transclude:true,
+                template:'<div class="sideNav">\
+                <div class="content">\
+                <h2 class="header">{{title}}</h2>\
+                <span class="content" ng-transclude></span>\
+                </div></div>'
+            };
+        });
+
+        app.directive("addMySite",function(){
+            return{
+                restrict:'EA',
+                transclude: true,
+                controller:function($scope,$element,$attrs,$transclude){
+                    $transclude(function(clone){
+                        var a=angular.element('<a>');
+                        a.attr('href',clone.text());
+                        a.text($attrs.title+clone.text());
+                        $element.append(a);
+                    });
+                }
             }
         });
-    //创建数据绑定流：input的数据双向绑定到someThing中，directive中将其绑定到some-thing上而some-thing和directive的myName绑定
+
+
+
+
+
+
+
+        app.controller('directiveExample', ['$scope','$log', function ($scope,$log) {
+            $scope.myInfo = {
+                name: 'mike',
+                url: 'jsmean.com.'
+            };
+            $scope.click=function(){
+                $log.info("Directive 触发了这个log记录")
+            }
+        }]);
     </script>
 
 </head>
 <body>
-<div class="container" ng-controller="MyController">
-    <input type="text" ng-model="someThing">
-<my-directive my-Url="http://google.com" some-thing="someThing" my-link-text="Click me to go to Google">
-</my-directive>
+<div ng-controller="directiveExample">
+    <input type="text" ng-model="myInfo.name">
+    <div my-welcome-directive name="myInfo.name" clickme="click()"></div>
+
+
+    <div sidebox title="TagCloud">
+        ￼<div class="tagcloud">
+            <a href="">Mike</a>
+            <a href="">has</a>
+            <a href="">many</a>
+            <a href="">Friend</a>
+            <a href="">!</a>
+    ￼￼  </div>
+    </div>
+
+    <div add-my-site title="Mike has a website:">
+        http://www.jsmean.com
+    </div>
+
+
+    <div sidebox title="AnotherNavbar">
+        ￼<div class="NavBar">
+        <a href="">Mike</a>
+        <a href="">is</a>
+        <a href="">Your</a>
+        <a href="">Friend</a>
+        <a href="">!</a>
+        ￼￼  </div>
+    </div>
+
+
+
+
 </div>
 </body>
 </html>

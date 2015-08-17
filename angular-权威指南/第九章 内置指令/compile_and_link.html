@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bower_components/foundation/css/foundation.min.css">
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/foundation/js/foundation.min.js"></script>
+    <script src="../../bower_components/angular/angular.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.min.js"></script>
+    <title></title>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.directive('myCustomDir',function(){
+            //初始化阶段
+            var name="mike",city="beijing";
+            console.log("")
+            return{
+                compile:function(element,attrs){
+                    return{
+                        pre:function(scope,element,attrs){
+
+                        },
+                        post:function(scope,element,attrs){
+
+                        }
+                    };
+                }
+            };
+        });
+
+        var directives=["myDirective1","myDirective2","myDirective3","myDirective4"];
+
+        directives.forEach(function(dir){
+            app.directive(dir,function(){
+                //初始化阶段
+                console.log(dir+"init")
+                return{
+                    compile:function(element,attrs){
+                        console.log(dir+"compile");
+                        return{
+                            pre:function(scope,element,attrs){
+                                console.log(dir+"pre-link");
+                            },
+                            post:function(scope,element,attrs){
+                                console.log(dir+"post-link");
+                            }
+                        };
+                    }
+                };
+            });
+        });
+
+
+        app.directive("mySpanShow",function(){
+            return{
+                restrict:'EA',
+                template:'<div><span><input type="text"></span><div>',
+                compile:function(tele,tattr){
+                    var span=tele.find('span').first();
+                    span.attr('ng-show',tattr.model+".visible."+tattr.name);
+                    return {
+                        pre:function(){},
+                        post:function(){}
+                    }
+                }
+            }
+        });
+
+        app.controller('DirectiveController',function($scope){
+            $scope.alert=function(){
+                console.log("hi,i am pre-link");
+            }
+            $scope.alertPost=function(){
+                console.log("hi,i am post-link");
+            }
+        });
+
+        app.directive("myLinkDir",function(){
+            return{
+                restrict:'EA',
+                controller:"DirectiveController",
+                template:'<div><span><input type="text"></span><div>',
+                compile:function(tele,tattr){
+                    return {
+                        pre:function(scope,iElement,iAttrs){
+                            scope.alert();
+                            iElement.append("Pre is running");
+                        },
+                        post:function(scope,iElement,iAttrs){
+                            scope.alertPost();
+                            iElement.html("post is running");
+                        }
+                    }
+                }
+            }
+        });
+
+        app.controller("MyController", function ($scope) {
+
+        });
+    </script>
+</head>
+<body>
+<div class="row" ng-controller="MyController">
+
+    <div my-directive1>
+        <div my-directive2 my-directive3>
+            <div my-directive4></div>
+        </div>
+    </div>
+
+    <!--<my-span-show model="state" name="address"/>-->
+    <my-link-dir model="state"  name="address"/>
+
+
+
+</div>
+</body>
+</html>

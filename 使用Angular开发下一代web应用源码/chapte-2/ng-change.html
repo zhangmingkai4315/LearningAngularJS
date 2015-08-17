@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+  <head>
+    <meta charset="utf-8">
+    <title>ShoppingCart</title>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.controller("MyController", function ($scope) {
+            $scope.funding={
+              startingEstimate:0,
+              needed:0
+            };
+
+            // version-1 直接调用函数
+            $scope.computerNeeded=function () {
+              $scope.funding.needed=$scope.funding.startingEstimate*20;
+            };
+
+            // version-2 使用$watch()来监视某个变量的改变，不管使用任何的途径更新状态均可以触发视图的变化
+
+            var computerNeededV2=function (newValue,oldValue,scope) {
+              if(newValue>100){
+                $scope.funding.needed="Too large";
+              }else{
+                $scope.funding.needed=$scope.funding.startingEstimate*20;
+              }
+            };
+            $scope.requestSubmit=function () {
+              window.alert("Submit success");
+            }
+            $scope.reset=function (event) {
+              event.preventDefault();
+              $scope.funding.startingEstimate=0;
+              return;
+            }
+            $scope.$watch('funding.startingEstimate',computerNeededV2);
+
+        });
+    </script>
+  </head>
+  <body ng-controller="MyController">
+      <form ng-submit="requestSubmit()">
+        Starting:<input ng-model="funding.startingEstimate">
+        Recommendation:{{funding.needed}}
+        <button>提交按钮</button>
+        <button ng-click="reset($event)">重置操作</button>
+      </form>
+  </body>
+</html>

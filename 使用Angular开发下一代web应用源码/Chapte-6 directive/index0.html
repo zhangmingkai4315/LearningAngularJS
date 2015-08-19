@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Directive</title>
+    <script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.4.4/angular.js">
+    </script>
+    <script>
+      var app=angular.module("MyApp",[]);
+      app.controller("MainController",function ($scope) {
+        $scope.expanders=[{
+          title:'Click me to expand',
+          text:"Hi there folks, I am the content that was hidden but is now shown"
+        },{
+          title:'Click me',
+          text:'I am even better text than you have seen previously'
+        },{
+          title:'No ,click me ',
+          text:'I am text that should be seen before seeing other texts'
+        }];
+      });
+
+      app.directive('accordion',function () {
+        return{
+          restrict:'EA',
+          replace:true,
+          transclude:true,
+          template:'<div ng-transclude></div>',
+          controller:function () {
+            var expanders=[];
+            this.gotOpened=function (selectExpander) {
+              angular.forEach(expanders,function (expander) {
+                if(expander!==selectExpander)
+                { 
+                  expander.showme=false;
+                }
+              });
+            };
+            this.addExpander=function (expander) {
+              expanders.push(expander);
+            }
+          }
+        }
+      });
+
+
+      app.directive('expander',function () {
+        return {
+          restrict:'EA',
+          replace:true,
+          transclude:true,
+          require:'^?accordion',
+          scope:{title:'=expanderTitle'},
+          template:'<div><div class="title" ng-click="toggle()">{{title}}</div>'+
+          '<div class="body" ng-show="showme" ng-transclude></div>'+
+          '</div>',
+
+          link:function (scope,ele,attrs,accordionController) {
+            scope.showme=false;
+            accordionController.addExpander(scope);
+            scope.toggle=function () {
+              scope.showme=!scope.showme;
+              accordionController.gotOpened(scope);
+            }
+          }
+
+
+
+        }
+      });
+
+
+
+    </script>
+  </head>
+  <body>
+    <div ng-controller="MainController">
+      <accordion>
+        <expander class="expander" ng-repeat='expander in expanders' expander-title='expander.title'>{{expander.text}}
+        </expander>
+      </accordion>
+    </div>
+  </body>
+</html>

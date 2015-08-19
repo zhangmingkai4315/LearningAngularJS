@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Directive</title>
+    <script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.4.4/angular.js">
+    </script>
+    <script>
+      var app=angular.module("MyApp",[]);
+      app.controller("MainController",function ($scope) {
+          $scope.title='click me to expande';
+          $scope.text='Hi everyone';
+      });
+
+      app.run(function ($templateCache) {
+        $templateCache.put('helloTemplateCached.html','<div><h1>Hello Cached World</h1></div>')
+      })
+      app.directive("hello",function () {
+        return{
+          restrict:'E',
+          templateUrl:'helloTemplateCached.html',
+          replace:true
+        }
+      });
+      app.directive('sidebox', function() {
+            return {
+                restrict: 'EA',
+                scope: {
+                    title: '@'
+                },
+                transclude: true,
+                template: '<div class="sidebox">\
+                    <div class="content">\
+                        <h2 class="header">{{ title }}</h2>\
+                        <span class="content" ng-transclude>\
+                        </span>\
+                    </div>\
+                </div>'
+        }
+      });
+
+
+      app.directive("expand",function () {
+        return{
+            restrict:"EA",
+            replace:true,
+            transclude:true,
+            scope:{title:'=expanderTitle'},
+            template:'<div><div class="title" ng-click="toggle()">{{title}}</div>'+
+            '<div class="body" ng-show="showme" ng-transclude></div>',
+            link:function (scope,ele,attr) {
+                scope.showme=false;
+                scope.toggle=function () {
+                  scope.showme=!scope.showme;
+                }
+            }
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div ng-controller="MainController">
+    <hello></hello>
+    <div sidebox="Welcome">Bob</div>
+
+    <expand class="expander" expander-title='title'>{{title}}</expand>
+
+    </div>
+
+  </body>
+</html>

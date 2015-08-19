@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+  <head>
+    <meta charset="utf-8">
+    <title>ShoppingCart</title>
+    <script src="//cdn.bootcss.com/angular.js/1.4.4/angular.js"></script>
+    <script>
+        var app=angular.module("MyApp",[]);
+        app.factory("Items",function () {
+          var items={}
+          items.query=function () {
+            return [
+              {
+                title:"candy",
+                quantity:0,
+                price:10
+              },{
+                title:"computer",
+                quantity:10,
+                price:1000
+              },{
+                title:"sugar",
+                quantity:2,
+                price:2
+              }
+            ]
+          };
+          return items;
+        });
+        app.filter('titleCase',function () {
+          var titleCaseFilter=function (input) {
+            if(!input||input==''){
+              return;
+            }
+            var inputList=input.split(' ');
+            for(var i=0;i<inputList.length;i++){
+              inputList[i]=inputList[i].charAt(0).toUpperCase()+inputList[i].slice(1);
+            }
+          
+            return inputList.join(' ');
+          };
+          return titleCaseFilter;
+        })
+        app.controller("MyController", function ($scope,Items) {
+          $scope.items=Items.query();
+          $scope.remove=function (index) {
+            $scope.items.splice(index,1);
+          };
+        });
+    </script>
+  </head>
+  <body ng-controller="MyController">
+
+    Please input any phase:<input ng-model="filterExample" type="text"/>
+    After change it will become:<span>{{filterExample|titleCase}}</span>
+    <h1>Your order</h1>
+    <div ng-repeat='item in items'>
+      <span>{{item.title}}</span>
+      <input type="text" ng-model="item.quantity"></input>
+      <span>{{item.price|currency}}</span>
+      <!--使用过滤器来完成显示-->
+      <span>{{item.price*item.quantity|currency}}</span>
+      <button ng-click="remove($index)">移除</button>
+
+
+    </div>
+  </body>
+</html>

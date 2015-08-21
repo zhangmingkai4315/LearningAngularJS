@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>AngularJS Datepicker</title>
+  <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+
+  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script src="http://cdn.bootcss.com/angular.js/1.4.4/angular.js"></script>
+
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+  <script>
+    document.write('<base href="' + document.location + '" />');
+  </script>
+  <script>
+  var app = angular.module('myApp', ['myApp.directives']);
+
+      app.controller('MainCtrl', function($scope) {
+        $scope.myText = 'Not Selected';
+        $scope.currentDate = '';
+        $scope.updateMyText = function(date) {
+          $scope.myText = 'Selected';
+          $scope.currentDate=date;
+        };
+      });
+
+
+  </script>
+  <script>
+  angular.module('myApp.directives', [])
+  .directive('datepicker', function() {
+    return {
+      // Enforce the angularJS default of restricting the directive to
+      // attributes only
+      restrict: 'A',
+      // Always use along with an ng-model
+      require: '?ngModel',
+      // This method needs to be defined and passed in from the
+      // passed in to the directive from the view controller
+      scope: {
+        select: '&'        // Bind the select function we refer to the right scope
+      },
+      link: function(scope, element, attrs, ngModel) {
+        if (!ngModel) return;
+
+        var optionsObj = {};
+
+        optionsObj.dateFormat = 'mm/dd/yy';
+        var updateModel = function(dateTxt) {
+          scope.$apply(function () {
+            // Call the internal AngularJS helper to
+            // update the two way binding
+          //  debugger;
+            ngModel.$setViewValue(dateTxt);
+          });
+        };
+
+        optionsObj.onSelect = function(dateTxt, picker) {
+          updateModel(dateTxt);
+          if (scope.select) {
+            scope.$apply(function() {
+              scope.select({date: dateTxt});
+            });
+          }
+        };
+
+        ngModel.$render = function() {
+
+          debugger;
+          // Use the AngularJS internal 'binding-specific' variable
+          element.datepicker('setDate', ngModel.$viewValue || '');
+        };
+        element.datepicker(optionsObj);
+      }
+    };
+  });
+
+  </script>
+</head>
+
+<body ng-controller="MainCtrl">
+<input id="dateField" datepicker ng-model="$parent.currentDate" select="updateMyText(date)">
+<br/>
+{{myText}} - {{currentDate}}
+</body>
+</html>
